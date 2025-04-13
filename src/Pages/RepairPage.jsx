@@ -1,38 +1,82 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import { Star, Phone, Edit, MapPin, Mail, Clock, MessageCircle } from "lucide-react";
 import { FaWhatsapp, FaStar } from "react-icons/fa";
 
 export default function BusinessProfile() {
+  const { id } = useParams();
   const [showNumber, setShowNumber] = useState(false);
   const [activeTab, setActiveTab] = useState("about");
   const [isOpen, setIsOpen] = useState(true);
-  const [images, setImages] = useState([
-    "https://www.studyindia.com/images/working-in-india.jpg",
-    "https://www.studyindia.com/images/working-in-india.jpg",
-  ]);
+  const [images, setImages] = useState([]);
+  const [serviceData, setServiceData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchServiceData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`http://localhost:5000/api/categories/sub/${id}`);
+        setServiceData(response.data);
+        
+        // Set initial images if available
+        if (response.data.image) {
+          setImages([response.data.image, response.data.image]);
+        }
+        
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching service data:", err);
+        setError("Failed to load service data. Please try again later.");
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchServiceData();
+    }
+  }, [id]);
 
   const handleImageUpload = () => {
-    setImages([...images, "https://www.studyindia.com/images/working-in-india.jpg"]);
+    if (serviceData?.image) {
+      setImages([...images, serviceData.image]);
+    }
   };
 
-  const businessHours = [
-    { day: "Monday", hours: "9:00 AM - 10:00 PM" },
-    { day: "Tuesday", hours: "9:00 AM - 10:00 PM" },
-    { day: "Wednesday", hours: "9:00 AM - 10:00 PM" },
-    { day: "Thursday", hours: "9:00 AM - 10:00 PM" },
-    { day: "Friday", hours: "9:00 AM - 10:00 PM" },
-    { day: "Saturday", hours: "10:00 AM - 8:00 PM" },
-    { day: "Sunday", hours: "10:00 AM - 6:00 PM" },
-  ];
+  // Format business hours from response
+  const formatBusinessHours = () => {
+    if (!serviceData?.businessHours) return [];
+    
+    return [
+      { day: "Monday", hours: serviceData.businessHours.monday || "Closed" },
+      { day: "Tuesday", hours: serviceData.businessHours.tuesday || "Closed" },
+      { day: "Wednesday", hours: serviceData.businessHours.wednesday || "Closed" },
+      { day: "Thursday", hours: serviceData.businessHours.thursday || "Closed" },
+      { day: "Friday", hours: serviceData.businessHours.friday || "Closed" },
+      { day: "Saturday", hours: serviceData.businessHours.saturday || "Closed" },
+      { day: "Sunday", hours: serviceData.businessHours.sunday || "Closed" },
+    ];
+  };
+
+  const businessHours = formatBusinessHours();
 
   const handleCall = () => {
-    window.location.href = "tel:+919871649524";
+    if (serviceData?.contact?.phone) {
+      window.location.href = `tel:${serviceData.contact.phone}`;
+    }
   };
 
   const handleWhatsApp = () => {
-    window.open("https://wa.me/919871649524", "_blank");
+    if (serviceData?.contact?.phone) {
+      // Remove non-numeric characters for WhatsApp link
+      const phoneNumber = serviceData.contact.phone.replace(/\D/g, '');
+      window.open(`https://wa.me/${phoneNumber}`, "_blank");
+    }
   };
 
+  // Sample data for sections that might not be in the API response
   const technicians = [
     {
       name: "Rahul Sharma",
@@ -83,6 +127,36 @@ export default function BusinessProfile() {
     },
   ];
 
+  if (loading) {
+    return (
+      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{minHeight: "60vh"}}>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{minHeight: "60vh"}}>
+        <div className="text-red-500 text-center">
+          <p className="text-xl font-bold mb-2">Error</p>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!serviceData) {
+    return (
+      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{minHeight: "60vh"}}>
+        <div className="text-center">
+          <p className="text-xl font-bold mb-2">Service Not Found</p>
+          <p>The requested service could not be found.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg">
       <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
@@ -92,28 +166,30 @@ export default function BusinessProfile() {
           <div className="flex flex-col mt-2 md:mt-2 md:flex-row justify-between items-start md:items-center gap-4 border-b pb-4">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl md:text-2xl font-bold">Virtual Systems</h1>
-                <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Verified</span>
+                <h1 className="text-xl md:text-2xl font-bold">{serviceData.name}</h1>
+                {serviceData.isVerified && (
+                  <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Verified</span>
+                )}
               </div>
 
               <div className="flex flex-wrap items-center gap-2 md:gap-3 mt-2">
                 <div className="flex items-center border rounded-full px-2 py-1 text-xs md:text-sm">
                   <Star className="text-[#fbc800] w-3 h-3 md:w-4 md:h-4 mr-1" fill="#fbc800" />
-                  <span className="font-medium">4.2</span>
-                  <span className="text-gray-500 text-xs ml-1">(128 reviews)</span>
+                  <span className="font-medium">{serviceData.rating?.value || '4.0'}</span>
+                  <span className="text-gray-500 text-xs ml-1">
+                    ({serviceData.rating?.totalReviews || 0} reviews)
+                  </span>
                 </div>
 
-                <span className="bg-gray-700 text-white px-2 py-1 text-xs rounded-md">Computer Repair & Services</span>
+                <span className="bg-gray-700 text-white px-2 py-1 text-xs rounded-md">{serviceData.name}</span>
 
                 <div className="flex items-center text-xs md:text-sm text-gray-600">
                   <Clock className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                  <span>{isOpen ? "Open now" : "Closed"} · Until 10:00 PM</span>
+                  <span>
+                    {isOpen ? "Open now" : "Closed"} · 
+                    {businessHours[0]?.hours ? ` Hours: ${businessHours[0]?.hours}` : ""}
+                  </span>
                 </div>
-              </div>
-
-              <div className="flex items-center mt-2 text-gray-600 text-xs md:text-sm">
-                <MapPin className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                <span>Sector 12, Navi Mumbai - 400703</span>
               </div>
             </div>
 
@@ -126,12 +202,14 @@ export default function BusinessProfile() {
                 Call Now
               </button>
 
-              <button
-                className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-md flex items-center justify-center text-xs md:text-sm"
-                onClick={handleWhatsApp}
-              >
-                <MessageCircle className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> WhatsApp
-              </button>
+              {serviceData.contact?.whatsappAvailable && (
+                <button
+                  className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-md flex items-center justify-center text-xs md:text-sm"
+                  onClick={handleWhatsApp}
+                >
+                  <MessageCircle className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> WhatsApp
+                </button>
+              )}
 
               <button className="border border-gray-300 hover:bg-gray-100 px-3 py-1.5 md:px-4 md:py-2 rounded-md flex items-center justify-center text-xs md:text-sm">
                 <Mail className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> Enquire Now
@@ -172,15 +250,13 @@ export default function BusinessProfile() {
             {activeTab === "about" && (
               <div className="py-4 space-y-8">
                 <div>
-                  <h3 className="text-base md:text-lg font-medium mb-2">About Virtual Systems</h3>
+                  <h3 className="text-base md:text-lg font-medium mb-2">About {serviceData.name}</h3>
                   <p className="text-gray-600 text-sm md:text-base">
-                    Virtual Systems specializes in computer repair, maintenance and IT services for both businesses and
-                    individual customers. With over 10 years of experience, we provide fast and reliable technical support
-                    at competitive prices.
+                    {serviceData.aboutBusiness || serviceData.description}
                   </p>
                 </div>
 
-                {/* Service Details Section - New Design */}
+                {/* Service Details Section */}
                 <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
                   <div className="flex items-center mb-5">
                     <div className="bg-[#fbc800] p-2 rounded-lg mr-3">
@@ -203,13 +279,13 @@ export default function BusinessProfile() {
                         <h3 className="font-medium text-gray-800">What's Included</h3>
                       </div>
                       <ul className="space-y-3 pl-2">
-                        {[
+                        {(serviceData.serviceDetails?.whatsIncluded || [
                           "Complete diagnostic report",
                           "Hardware component testing",
                           "Software troubleshooting",
                           "Performance optimization",
                           "Post-service documentation"
-                        ].map((item, i) => (
+                        ]).map((item, i) => (
                           <li key={i} className="flex items-start">
                             <span className="text-[#fbc800] mr-2 mt-1">•</span>
                             <span className="text-gray-700">{item}</span>
@@ -229,17 +305,17 @@ export default function BusinessProfile() {
                         <h3 className="font-medium text-gray-800">What You'll Need</h3>
                       </div>
                       <div className="space-y-4">
-                        {[
-                          { icon: "🔑", title: "Admin Access", desc: "For software repairs and installations" },
-                          { icon: "💾", title: "Installation Media", desc: "Original disks or downloads if available" },
-                          { icon: "🔄", title: "Data Backup", desc: "Recommended before any major repairs" },
-                          { icon: "🔌", title: "Power Supply", desc: "Stable power connection required" }
-                        ].map((item, i) => (
+                        {(serviceData.serviceDetails?.whatYouNeed || [
+                          { title: "Admin Access", note: "For software repairs and installations" },
+                          { title: "Installation Media", note: "Original disks or downloads if available" },
+                          { title: "Data Backup", note: "Recommended before any major repairs" },
+                          { title: "Power Supply", note: "Stable power connection required" }
+                        ]).map((item, i) => (
                           <div key={i} className="flex items-start">
-                            <span className="text-xl mr-3">{item.icon}</span>
+                            <span className="text-xl mr-3">🔑</span>
                             <div>
                               <h4 className="font-medium text-gray-800">{item.title}</h4>
-                              <p className="text-sm text-gray-500">{item.desc}</p>
+                              <p className="text-sm text-gray-500">{item.note}</p>
                             </div>
                           </div>
                         ))}
@@ -257,7 +333,7 @@ export default function BusinessProfile() {
                       </div>
                       <div>
                         <h3 className="font-medium text-gray-800">Quality Guarantee</h3>
-                        <p className="text-sm text-gray-600">All repairs come with a 90-day warranty covering parts and labor</p>
+                        <p className="text-sm text-gray-600">All services come with a 90-day warranty covering parts and labor</p>
                       </div>
                     </div>
                   </div>
@@ -267,20 +343,18 @@ export default function BusinessProfile() {
                 <div>
                   <h3 className="text-base md:text-lg font-medium mb-2">Contact Information</h3>
                   <div className="space-y-2">
-                    <p className="flex items-center text-sm md:text-base">
-                      <Phone className="w-3 h-3 md:w-4 md:h-4 mr-2 text-gray-500" />
-                      +91 98765 43210
-                    </p>
-                    <p className="flex items-center text-sm md:text-base">
-                      <Mail className="w-3 h-3 md:w-4 md:h-4 mr-2 text-gray-500" /> contact@virtualsystems.com
-                    </p>
-                    <p className="flex items-start text-sm md:text-base">
-                      <MapPin className="w-3 h-3 md:w-4 md:h-4 mr-2 mt-0.5 md:mt-1 text-gray-500" />
-                      <span>
-                        Shop No. 23, Sector 12,
-                        Navi Mumbai, Maharashtra - 400703
-                      </span>
-                    </p>
+                    {serviceData.contact?.phone && (
+                      <p className="flex items-center text-sm md:text-base">
+                        <Phone className="w-3 h-3 md:w-4 md:h-4 mr-2 text-gray-500" />
+                        {serviceData.contact.phone}
+                      </p>
+                    )}
+                    {serviceData.contact?.email && (
+                      <p className="flex items-center text-sm md:text-base">
+                        <Mail className="w-3 h-3 md:w-4 md:h-4 mr-2 text-gray-500" /> 
+                        {serviceData.contact.email}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -313,7 +387,7 @@ export default function BusinessProfile() {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-                  {images.map((img, index) => (
+                  {images.length > 0 ? images.map((img, index) => (
                     <div
                       key={index}
                       className="relative aspect-square overflow-hidden rounded-md border hover:border-[#fbc800]"
@@ -324,7 +398,11 @@ export default function BusinessProfile() {
                         className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                  ))}
+                  )) : (
+                    <div className="col-span-full text-center py-10 text-gray-500">
+                      No photos available
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -380,9 +458,13 @@ export default function BusinessProfile() {
                     <div className="flex items-center mt-1">
                       <div className="flex items-center bg-[#fbc800] px-2 py-1 rounded-md mr-2">
                         <FaStar className="text-white text-xs" />
-                        <span className="ml-1 text-white text-sm font-medium">4.2</span>
+                        <span className="ml-1 text-white text-sm font-medium">
+                          {serviceData.rating?.value || "4.0"}
+                        </span>
                       </div>
-                      <span className="text-gray-500 text-sm">(128 reviews)</span>
+                      <span className="text-gray-500 text-sm">
+                        ({serviceData.rating?.totalReviews || 0} reviews)
+                      </span>
                     </div>
                   </div>
                   <button className="bg-[#fbc800] hover:bg-[#e0b400] text-black font-medium px-3 py-1.5 md:px-4 md:py-2 rounded-md flex items-center justify-center text-xs md:text-sm">
@@ -436,37 +518,43 @@ export default function BusinessProfile() {
             <h3 className="text-base md:text-lg font-bold mb-3 md:mb-4">Contact Business</h3>
             
             <div className="space-y-3 md:space-y-4">
-              <div>
-                <h4 className="font-medium text-gray-700 text-sm md:text-base mb-1.5 md:mb-2">Phone Number</h4>
-                <div className="flex items-center gap-2">
-                  <button
-                    className="flex-1 bg-[#fbc800] hover:bg-[#e0b400] text-black font-medium px-3 py-1.5 md:px-4 md:py-2 rounded-md flex items-center justify-center text-xs md:text-sm"
-                    onClick={handleCall}
-                  >
-                    <Phone className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
-                    Call Now
-                  </button>
-                  <button 
-                    className="bg-green-600 hover:bg-green-700 text-white p-1.5 md:p-2 rounded-md"
-                    onClick={handleWhatsApp}
-                  >
-                    <MessageCircle className="w-3 h-3 md:w-4 md:h-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-medium text-gray-700 text-sm md:text-base mb-1.5 md:mb-2">Email Address</h4>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 border border-gray-300 rounded-md px-3 py-1.5 md:px-4 md:py-2 flex items-center text-xs md:text-sm">
-                    <Mail className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 text-gray-500" />
-                    <span>contact@virtualsystems.com</span>
+              {serviceData.contact?.phone && (
+                <div>
+                  <h4 className="font-medium text-gray-700 text-sm md:text-base mb-1.5 md:mb-2">Phone Number</h4>
+                  <div className="flex items-center gap-2">
+                    <button
+                      className="flex-1 bg-[#fbc800] hover:bg-[#e0b400] text-black font-medium px-3 py-1.5 md:px-4 md:py-2 rounded-md flex items-center justify-center text-xs md:text-sm"
+                      onClick={handleCall}
+                    >
+                      <Phone className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                      Call Now
+                    </button>
+                    {serviceData.contact?.whatsappAvailable && (
+                      <button 
+                        className="bg-green-600 hover:bg-green-700 text-white p-1.5 md:p-2 rounded-md"
+                        onClick={handleWhatsApp}
+                      >
+                        <MessageCircle className="w-3 h-3 md:w-4 md:h-4" />
+                      </button>
+                    )}
                   </div>
-                  <button className="border border-gray-300 hover:bg-gray-100 p-1.5 md:p-2 rounded-md">
-                    <Mail className="w-3 h-3 md:w-4 md:h-4" />
-                  </button>
                 </div>
-              </div>
+              )}
+
+              {serviceData.contact?.email && (
+                <div>
+                  <h4 className="font-medium text-gray-700 text-sm md:text-base mb-1.5 md:mb-2">Email Address</h4>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 border border-gray-300 rounded-md px-3 py-1.5 md:px-4 md:py-2 flex items-center text-xs md:text-sm">
+                      <Mail className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 text-gray-500" />
+                      <span>{serviceData.contact.email}</span>
+                    </div>
+                    <button className="border border-gray-300 hover:bg-gray-100 p-1.5 md:p-2 rounded-md">
+                      <Mail className="w-3 h-3 md:w-4 md:h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <h4 className="font-medium text-gray-700 text-sm md:text-base mb-1.5 md:mb-2">Business Hours</h4>
@@ -477,17 +565,6 @@ export default function BusinessProfile() {
                       <span className="font-medium">{item.hours}</span>
                     </div>
                   ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-medium text-gray-700 text-sm md:text-base mb-1.5 md:mb-2">Location</h4>
-                <div className="flex items-start text-xs md:text-sm">
-                  <MapPin className="w-3 h-3 md:w-4 md:h-4 mr-1.5 md:mr-2 mt-0.5 md:mt-1 text-gray-500" />
-                  <span>
-                    Shop No. 23, Sector 12<br />
-                    Navi Mumbai, Maharashtra - 400703
-                  </span>
                 </div>
               </div>
 

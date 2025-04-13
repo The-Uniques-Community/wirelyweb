@@ -12,6 +12,25 @@ export const getSubCategories = async (req, res) => {
   res.json(subcategories);
 };
 
+export const getSubCategoriesById = async (req, res) => {
+  const { subId } = req.params;
+  
+  try {
+    const subcategory = await SubCategory.findById(subId);
+
+    if (!subcategory) {
+      return res.status(404).json({ message: "Subcategory not found" });
+    }
+
+    res.json(subcategory);
+  } catch (error) {
+    console.error("Error fetching subcategory:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
 // Add new main category
 export const createMainCategory = async (req, res) => {
   try {
