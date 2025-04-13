@@ -53,3 +53,57 @@ export const createSubCategory = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+export const bulkCreateMainCategories = async (req, res) => {
+    try {
+      const categories = req.body;
+      
+      if (!Array.isArray(categories)) {
+        return res.status(400).json({ message: "Request body must be an array" });
+      }
+      
+      const savedCategories = await MainCategory.insertMany(categories);
+      res.status(201).json({
+        message: `Successfully created ${savedCategories.length} main categories`,
+        data: savedCategories
+      });
+    } catch (error) {
+      res.status(400).json({ 
+        message: "Failed to create bulk main categories", 
+        error: error.message 
+      });
+    }
+  };
+  
+  // Bulk create subcategories
+  export const bulkCreateSubCategories = async (req, res) => {
+    try {
+      const subcategories = req.body;
+      
+      if (!Array.isArray(subcategories)) {
+        return res.status(400).json({ message: "Request body must be an array" });
+      }
+      
+      // Validate all main category IDs exist
+      const mainCategoryIds = [...new Set(subcategories.map(sub => sub.mainCategory))];
+      const existingCategories = await MainCategory.find({
+        _id: { $in: mainCategoryIds }
+      });
+      
+      if (existingCategories.length !== mainCategoryIds.length) {
+        return res.status(400).json({ 
+          message: "One or more main category IDs don't exist" 
+        });
+      }
+      
+      const savedSubcategories = await SubCategory.insertMany(subcategories);
+      res.status(201).json({
+        message: `Successfully created ${savedSubcategories.length} subcategories`,
+        data: savedSubcategories
+      });
+    } catch (error) {
+      res.status(400).json({ 
+        message: "Failed to create bulk subcategories", 
+        error: error.message 
+      });
+    }
+  };
