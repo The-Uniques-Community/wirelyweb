@@ -157,8 +157,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 font-[Poppins] bg-white text-black transition-all duration-300 ${
-        isScrolled ? "shadow-md py-0" : "shadow-sm py-2"
+      className={`fixed top-0 left-0 right-0 z-50 font-[Poppins]  text-black transition-all duration-300 ${
+        isScrolled ? "shadow-md py-0 bg-white" : " py-2 "
       }`}
     >
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -180,7 +180,7 @@ const Navbar = () => {
           {/* Desktop Search - Centered */}
           <div className="hidden md:flex items-center w-1/3 mx-6" ref={searchRef}>
             <div className="relative w-full">
-              <form onSubmit={handleSearchSubmit}>
+              {/* <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
                   placeholder="What service are you looking for today?"
@@ -195,7 +195,7 @@ const Navbar = () => {
                 >
                   <Search size={20} />
                 </button>
-              </form>
+              </form> */}
               
               {/* Search results dropdown */}
               {showSearchResults && searchResults.length > 0 && (
