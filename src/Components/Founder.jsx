@@ -1,16 +1,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiLinkedin, FiTwitter, FiAward, FiGlobe, FiMic } from "react-icons/fi";
+import { FiTool, FiUsers } from "react-icons/fi";
 
 const founders = [
   {
-    name: "John Doe",
-    role: "Co-Founder & CEO",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80",
-    bio: "Serial entrepreneur with 15+ years in tech. Built three successful startups before Wirely.",
+    name: "Ankur Gill",
+    role: "Founder",
+    image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQv3gSutRKWy7NjoCdYLZHpnsaVt4vwuXA5zikM",
+    bio: "Tech enthusiast passionate about empowering local communities with reliable IT support. Driving Wirely’s mission to bridge the tech gap for schools and colleges.",
     fact: {
-      icon: <FiAward className="text-[#FBC800]" />,
-      text: "Ran a marathon on every continent"
+      icon: <FiTool className="text-[#FBC800]" />,
+      text: "Loves building DIY tech projects"
     },
     social: {
       linkedin: "#",
@@ -18,13 +19,13 @@ const founders = [
     }
   },
   {
-    name: "Jane Smith",
-    role: "Co-Founder & CTO",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=688&q=80",
-    bio: "AI pioneer and systems architect. Former lead engineer at Fortune 500 tech companies.",
+    name: "Jitendra",
+    role: "Director",
+    image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQvOtVBks1ezMFJdUx32OANHKPm4XQqB7vkiWnf",
+    bio: "Strategic leader with a passion for education and community upliftment. Ensuring Wirely delivers effective and dependable technical services to local institutions.",
     fact: {
-      icon: <FiGlobe className="text-[#FBC800]" />,
-      text: "Speaks 4 languages fluently"
+      icon: <FiUsers className="text-[#FBC800]" />,
+      text: "Actively mentors youth in tech literacy"
     },
     social: {
       linkedin: "#",
@@ -32,6 +33,8 @@ const founders = [
     }
   },
 ];
+
+
 
 const FoundersSection = () => {
   return (
