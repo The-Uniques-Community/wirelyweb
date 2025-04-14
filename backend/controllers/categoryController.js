@@ -17,7 +17,7 @@ export const getSubCategoriesById = async (req, res) => {
   
   try {
     const subcategory = await SubCategory.findById(subId);
-
+    console.log("Subcategory:", subcategory); // Debugging line
     if (!subcategory) {
       return res.status(404).json({ message: "Subcategory not found" });
     }

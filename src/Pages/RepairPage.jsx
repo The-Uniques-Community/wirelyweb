@@ -18,7 +18,7 @@ export default function BusinessProfile() {
     const fetchServiceData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/categories/sub/${id}`);
+        const response = await axios.get(`http://localhost:5000/api/categories/subone/${id}`);
         setServiceData(response.data);
         
         // Set initial images if available
