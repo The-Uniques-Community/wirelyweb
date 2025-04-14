@@ -6,7 +6,7 @@ export const fetchMainCategories = createAsyncThunk(
   'categories/fetchMain',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:5000/api/categories/main');
+      const response = await axios.get('https://wirely-backend.vercel.app/api/categories/main');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Failed to fetch main categories');
@@ -19,7 +19,7 @@ export const fetchSubCategories = createAsyncThunk(
   'categories/fetchSub',
   async (mainId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/categories/sub/${mainId}`);
+      const response = await axios.get(`https://wirely-backend.vercel.app/api/categories/sub/${mainId}`);
       return { mainId, subCategories: response.data };
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Failed to fetch subcategories');
