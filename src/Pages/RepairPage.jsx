@@ -502,14 +502,14 @@ export default function BusinessProfile() {
           </div>
 
           {/* Footer */}
-          <div className="mt-4 md:mt-6 pt-4 border-t">
+          {/* <div className="mt-4 md:mt-6 pt-4 border-t">
             <button
               className="w-full border border-[#fbc800] hover:bg-[#fff9e0] text-black px-4 py-2 rounded-md flex items-center justify-center text-sm md:text-base"
               title="Verify ownership to edit business details"
             >
               <Edit className="w-3 h-3 md:w-4 md:h-4 mr-2" /> Claim & Edit Business Profile
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Right Side Contact Panel */}

@@ -27,11 +27,24 @@ export const fetchSubCategories = createAsyncThunk(
   }
 );
 
+export const fetchAllSubCategories = createAsyncThunk(
+  'categories/fetchAllSub',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`https://wirely-backend.vercel.app/api/categories/sub`);
+      return { subAllCategories: response.data };
+    } catch (error) {
+      return rejectWithValue(error.response?.data || 'Failed to fetch subcategories');
+    }
+  }
+);
+
 const categorySlice = createSlice({
   name: 'categories',
   initialState: {
     mainCategories: [],
     subCategories: {},
+    subAllCategories: {},
     selectedMainCategory: null,
     loading: false,
     error: null,
@@ -73,7 +86,20 @@ const categorySlice = createSlice({
       .addCase(fetchSubCategories.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      // All subcategories fetching cases
+      .addCase(fetchAllSubCategories.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllSubCategories.fulfilled, (state, action) => {
+        state.loading = false;
+        state.subAllCategories = action.payload.subAllCategories;
+      })
+      .addCase(fetchAllSubCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 
