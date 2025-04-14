@@ -12,6 +12,12 @@ export const getSubCategories = async (req, res) => {
   res.json(subcategories);
 };
 
+export const getSubCategoriesByMain = async (req, res) => {
+  const { mainId } = req.params;
+  const subcategories = await SubCategory.find({ mainCategory: mainId });
+  res.json(subcategories);
+};
+
 export const getSubCategoriesById = async (req, res) => {
   const { subId } = req.params;
   

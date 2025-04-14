@@ -29,7 +29,7 @@ const Navbar = () => {
   const searchRef = useRef(null);
   
   const dispatch = useDispatch();
-  const { mainCategories, subAllCategories, loading } = useSelector(state => state.categories);
+  const { subAllCategories, loading } = useSelector(state => state.categories);
   
   // Fetch all subcategories when component mounts
   useEffect(() => {
