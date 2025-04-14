@@ -20,12 +20,12 @@ export default function BusinessProfile() {
         setLoading(true);
         const response = await axios.get(`https://wirely-backend.vercel.app/api/categories/subone/${id}`);
         setServiceData(response.data);
-        
+
         // Set initial images if available
         if (response.data.image) {
           setImages([response.data.image, response.data.image]);
         }
-        
+
         setLoading(false);
       } catch (err) {
         console.error("Error fetching service data:", err);
@@ -48,7 +48,7 @@ export default function BusinessProfile() {
   // Format business hours from response
   const formatBusinessHours = () => {
     if (!serviceData?.businessHours) return [];
-    
+
     return [
       { day: "Monday", hours: serviceData.businessHours.monday || "Closed" },
       { day: "Tuesday", hours: serviceData.businessHours.tuesday || "Closed" },
@@ -129,7 +129,7 @@ export default function BusinessProfile() {
 
   if (loading) {
     return (
-      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{minHeight: "60vh"}}>
+      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{ minHeight: "60vh" }}>
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
@@ -137,7 +137,7 @@ export default function BusinessProfile() {
 
   if (error) {
     return (
-      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{minHeight: "60vh"}}>
+      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{ minHeight: "60vh" }}>
         <div className="text-red-500 text-center">
           <p className="text-xl font-bold mb-2">Error</p>
           <p>{error}</p>
@@ -148,7 +148,7 @@ export default function BusinessProfile() {
 
   if (!serviceData) {
     return (
-      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{minHeight: "60vh"}}>
+      <div className="max-w-[95%] mt-28 font-[Poppins] mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg flex justify-center items-center" style={{ minHeight: "60vh" }}>
         <div className="text-center">
           <p className="text-xl font-bold mb-2">Service Not Found</p>
           <p>The requested service could not be found.</p>
@@ -186,7 +186,7 @@ export default function BusinessProfile() {
                 <div className="flex items-center text-xs md:text-sm text-gray-600">
                   <Clock className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                   <span>
-                    {isOpen ? "Open now" : "Closed"} · 
+                    {isOpen ? "Open now" : "Closed"} ·
                     {businessHours[0]?.hours ? ` Hours: ${businessHours[0]?.hours}` : ""}
                   </span>
                 </div>
@@ -351,7 +351,7 @@ export default function BusinessProfile() {
                     )}
                     {serviceData.contact?.email && (
                       <p className="flex items-center text-sm md:text-base">
-                        <Mail className="w-3 h-3 md:w-4 md:h-4 mr-2 text-gray-500" /> 
+                        <Mail className="w-3 h-3 md:w-4 md:h-4 mr-2 text-gray-500" />
                         {serviceData.contact.email}
                       </p>
                     )}
@@ -365,7 +365,7 @@ export default function BusinessProfile() {
                     {businessHours.map((item, index) => (
                       <div key={index} className="flex justify-between text-xs md:text-sm border-b border-gray-100 py-1">
                         <span className="font-medium">{item.day}</span>
-                        <span className="text-gray-600">{item.hours}</span>
+                        <span className="text-gray-600">{item.day === 'Sunday' ? '10:00 A.M - 4:00 P.M' : item.hours}</span>
                       </div>
                     ))}
                   </div>
@@ -516,7 +516,7 @@ export default function BusinessProfile() {
         <div className="lg:w-72 xl:w-80 flex-shrink-0">
           <div className="sticky top-24 p-3 md:p-4 border border-gray-200 rounded-lg shadow-sm">
             <h3 className="text-base md:text-lg font-bold mb-3 md:mb-4">Contact Business</h3>
-            
+
             <div className="space-y-3 md:space-y-4">
               {serviceData.contact?.phone && (
                 <div>
@@ -530,7 +530,7 @@ export default function BusinessProfile() {
                       Call Now
                     </button>
                     {serviceData.contact?.whatsappAvailable && (
-                      <button 
+                      <button
                         className="bg-green-600 hover:bg-green-700 text-white p-1.5 md:p-2 rounded-md"
                         onClick={handleWhatsApp}
                       >
@@ -544,19 +544,21 @@ export default function BusinessProfile() {
               {serviceData.contact?.email && (
                 <div>
                   <h4 className="font-medium text-gray-700 text-sm md:text-base mb-1.5 md:mb-2">Email Address</h4>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 border border-gray-300 rounded-md px-3 py-1.5 md:px-4 md:py-2 flex items-center text-xs md:text-sm">
-                      <Mail className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 text-gray-500" />
-                      <span>{serviceData.contact.email}</span>
-                    </div>
-                    <button className="border border-gray-300 hover:bg-gray-100 p-1.5 md:p-2 rounded-md">
-                      <Mail className="w-3 h-3 md:w-4 md:h-4" />
-                    </button>
+                  <div className="flex items-center  gap-2">
+                    <a
+                      href={`https://mail.google.com/mail/?view=cm&fs=1&to=help.wirely@gmail.com&su=Support`} target="_blank" rel="noopener noreferrer"
+                      title="Send Email"
+                    >
+                      <div className="flex-1 border border-gray-300  rounded-md px-3 py-1.5 md:px-4 md:py-2 flex items-center text-xs md:text-sm">
+                        <Mail className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 text-gray-500" />
+                        <span>help.wirely@gmail.com</span>
+                      </div>
+                    </a>
                   </div>
                 </div>
               )}
 
-              <div>
+              {/* <div>
                 <h4 className="font-medium text-gray-700 text-sm md:text-base mb-1.5 md:mb-2">Business Hours</h4>
                 <div className="space-y-1.5 md:space-y-2">
                   {businessHours.map((item, index) => (
@@ -566,11 +568,11 @@ export default function BusinessProfile() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
-              <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-1.5 md:py-2 px-4 rounded-md mt-2 md:mt-4 text-sm md:text-base">
+              {/* <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-1.5 md:py-2 px-4 rounded-md mt-2 md:mt-4 text-sm md:text-base">
                 Get Directions
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
