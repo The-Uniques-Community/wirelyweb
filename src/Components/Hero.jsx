@@ -380,7 +380,7 @@ export default function BusinessDirectory() {
     try {
       // Updated API endpoint - changed from /api/categories/search to /api/services/search
       const response = await axios.get(
-        `https://wirely-backend.vercel.app/api/services/search?q=${encodeURIComponent(query)}`
+        `https://wirely-backend.vercel.app/api/categories/search?q=${encodeURIComponent(query)}`
       );
       console.log("Search API response:", response.data);
       setSuggestions(response.data);

@@ -142,12 +142,11 @@ export const searchSubCategories = async (req, res) => {
       return res.status(400).json({ message: "Search query must be at least 2 characters" });
     }
     
-    // Search for subcategories with names containing the query string
     const subcategories = await SubCategory.find({ 
       name: { $regex: query, $options: 'i' } 
     })
-    .limit(8) // Limit to 8 results
-    .populate('mainCategory', 'name'); // Include main category name
+    .limit(8)
+    .populate('mainCategory', 'name');
     
     res.json(subcategories);
   } catch (error) {
