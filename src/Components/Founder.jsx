@@ -9,20 +9,20 @@ import 'swiper/css/pagination';
 
 // Expanded team members array
 const teamMembers = [
-  {
-    name: "Ankur Gill",
-    role: "Founder",
-    image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQv3gSutRKWy7NjoCdYLZHpnsaVt4vwuXA5zikM",
-    bio: "Tech enthusiast passionate about empowering local communities with reliable IT support. Driving Wirely's mission to bridge the tech gap for schools and colleges.",
-    fact: {
-      icon: <FiTool className="text-[#FBC800]" />,
-      text: "Loves building DIY tech projects"
-    },
-    social: {
-      linkedin: "#",
-      twitter: "#"
-    }
-  },
+  // {
+  //   name: "Ankur Gill",
+  //   role: "Founder",
+  //   image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQv3gSutRKWy7NjoCdYLZHpnsaVt4vwuXA5zikM",
+  //   bio: "Tech enthusiast passionate about empowering local communities with reliable IT support. Driving Wirely's mission to bridge the tech gap for schools and colleges.",
+  //   fact: {
+  //     icon: <FiTool className="text-[#FBC800]" />,
+  //     text: "Loves building DIY tech projects"
+  //   },
+  //   social: {
+  //     linkedin: "#",
+  //     twitter: "#"
+  //   }
+  // },
   {
     name: "Jitendra",
     role: "Director",
