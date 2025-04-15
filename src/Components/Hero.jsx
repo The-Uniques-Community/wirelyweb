@@ -16,6 +16,7 @@ import Pc2 from '../assets/pc2.png';
 import Windows from '../assets/windows.png';
 import Windows2 from '../assets/windows2.png';
 import DataRecovery from '../assets/data recovery.png';
+import { toast } from "react-hot-toast"; // Assuming you use react-hot-toast for notifications
 
 // Service category modal component using local state only
 const ServiceModal = ({ isOpen, onClose, selectedCategory }) => {
@@ -132,7 +133,10 @@ function RotatingText({
 }
 
 export default function BusinessDirectory() {
-  const [location, setLocation] = useState("Mumbai");
+  const [location, setLocation] = useState("");
+  const [isLocating, setIsLocating] = useState(false);
+  const [isInServiceArea, setIsInServiceArea] = useState(true);
+  const [loadingLocation, setLoadingLocation] = useState(false);
   const [search, setSearch] = useState("");
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -144,6 +148,82 @@ export default function BusinessDirectory() {
   useEffect(() => {
     dispatch(fetchMainCategories());
   }, [dispatch]);
+  
+  // Service area cities (case insensitive)
+  const serviceCities = ["chandigarh", "panchkula", "rajpura", "ambala"];
+  
+  // Get user's location on component mount
+  useEffect(() => {
+    getGeolocation();
+  }, []);
+  
+  // Function to get user's geolocation and convert to city name
+  const getGeolocation = () => {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by your browser");
+      return;
+    }
+    
+    setLoadingLocation(true);
+    setIsLocating(true);
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          console.log("User coordinates:", latitude, longitude);
+          
+          // Use reverse geocoding to get the city name
+          const response = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          );
+          
+          const data = await response.json();
+          const detectedCity = data.city || data.locality || "Unknown location";
+          console.log("Detected city:", detectedCity);
+          
+          // Check if user is in service area
+          const inServiceArea = serviceCities.some(city => 
+            detectedCity.toLowerCase().includes(city.toLowerCase())
+          );
+          
+          setLocation(detectedCity);
+          setIsInServiceArea(inServiceArea);
+          
+          if (!inServiceArea) {
+            toast.error(`Sorry, we aren't available in ${detectedCity} yet. We'll be there soon!`, {
+              duration: 6000,
+            });
+          } else {
+            toast.success(`Location detected: ${detectedCity}`);
+          }
+        } catch (error) {
+          console.error("Error getting location:", error);
+          toast.error("Couldn't determine your location");
+        } finally {
+          setLoadingLocation(false);
+          setIsLocating(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setLoadingLocation(false);
+        setIsLocating(false);
+        
+        let errorMessage = "Failed to get your location";
+        if (error.code === 1) {
+          errorMessage = "Location permission denied";
+        } else if (error.code === 2) {
+          errorMessage = "Location unavailable";
+        } else if (error.code === 3) {
+          errorMessage = "Location request timed out";
+        }
+        
+        toast.error(errorMessage);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  };
   
   // Map service titles to keywords that might appear in main categories
   const serviceKeywords = {
@@ -302,32 +382,50 @@ export default function BusinessDirectory() {
 
         <div className="relative rounded-2xl p-4 sm:p-6 mb-8 mx-2 sm:mx-0">
           <div className="flex flex-col md:flex-row gap-3">
-            <div className="flex items-center bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl w-full md:w-64 flex-shrink-0 hover:border-amber-300 transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-amber-500 mr-2 h-5 w-5"
+            <div className={`flex items-center bg-gray-50 border ${!isInServiceArea ? 'border-red-300' : 'border-gray-200'} px-4 py-3 rounded-xl w-full md:w-64 flex-shrink-0 hover:border-amber-300 transition-colors relative`}>
+              <button
+                onClick={getGeolocation}
+                className="text-amber-500 mr-2 h-5 w-5 flex-shrink-0"
+                disabled={isLocating}
+                title="Detect my location"
               >
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
+                {loadingLocation ? (
+                  <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                )}
+              </button>
               <input
                 type="text"
-                className="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400"
+                className={`bg-transparent outline-none w-full ${!isInServiceArea ? 'text-red-600' : 'text-gray-700'} placeholder-gray-400`}
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Your location"
               />
+              {!isInServiceArea && (
+                <div className="absolute -bottom-6 left-0 text-xs text-red-500 font-medium">
+                  We're not available in this area yet
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl w-full md:w-[30rem] hover:border-amber-300 transition-colors">
+            <div className="flex flex-col sm:flex-row items-center bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl w-full md:w-full hover:border-amber-300 transition-colors">
               <input
                 type="text"
                 className="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400 mb-2 sm:mb-0"
@@ -448,7 +546,7 @@ export default function BusinessDirectory() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div>  
           ))}
 
           <div className="h-60 w-full sm:w-1/6">
