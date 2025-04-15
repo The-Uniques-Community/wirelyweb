@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from 'styled-components';
-import { FiAward, FiCode, FiShield, FiTrendingUp, FiCheck, FiUsers, FiGlobe, FiLayers, FiZap } from 'react-icons/fi';
+import { FiAward, FiServer, FiShield, FiTrendingUp, FiCheck, FiUsers, FiGlobe, FiLayers, FiZap } from 'react-icons/fi';
 
 const Choose = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -12,26 +12,26 @@ const Choose = () => {
       label: "Expertise",
       icon: <FiAward size={20} />,
       content: {
-        title: "Industry-Leading Expertise",
-        description: "Our team comprises top 1% specialists with 10+ years average experience delivering complex solutions.",
+        title: "Certified IT Specialists",
+        description: "Our team consists of certified professionals with extensive experience in server management, networking, and security infrastructure.",
         features: [
-          "Certified Experts",
-          "Industry Knowledge",
-          "Continuous Training"
+          "Microsoft & Cisco Certified Engineers",
+          "Structured Cabling Specialists",
+          "Security System Installation Experts"
         ]
       }
     },
     {
       id: 1,
-      label: "Technology",
-      icon: <FiCode size={20} />,
+      label: "Infrastructure",
+      icon: <FiServer size={20} />,
       content: {
-        title: "Cutting-Edge Technology Stack",
-        description: "We leverage only modern, battle-tested technologies to future-proof your solutions.",
+        title: "Enterprise-Grade Hardware Solutions",
+        description: "We deploy and maintain robust IT infrastructure using industry-leading equipment and proven methodologies.",
         features: [
-          "Latest frameworks and libraries",
-          "Microservices architecture",
-          "CI/CD pipeline integration"
+          "Server deployment and optimization",
+          "Professional structured cabling",
+          "High-performance network equipment"
         ]
       }
     },
@@ -40,12 +40,12 @@ const Choose = () => {
       label: "Security",
       icon: <FiShield size={20} />,
       content: {
-        title: "Enterprise-Grade Security",
-        description: "Security-first approach embedded in every layer of our development process.",
+        title: "Comprehensive Security Systems",
+        description: "Our multi-layered security approach combines advanced hardware, software, and best practices to protect your business.",
         features: [
-          "SOC 2 Type II compliant",
-          "Regular penetration testing",
-          "GDPR & HIPAA ready solutions"
+          "Next-gen firewall protection",
+          "HD surveillance camera systems",
+          "Biometric access control solutions"
         ]
       }
     },
@@ -54,21 +54,21 @@ const Choose = () => {
       label: "Results",
       icon: <FiTrendingUp size={20} />,
       content: {
-        title: "Proven Business Results",
-        description: "We measure success by the tangible impact we create for our clients.",
+        title: "Measurable Business Impact",
+        description: "Our infrastructure solutions deliver tangible improvements to your operations, security, and bottom line.",
         features: [
-          "Average 3.2x ROI for our clients",
-          "95% project delivery on time",
-          "40% faster time-to-market"
+          "Average 99.9% network uptime",
+          "40% reduction in IT-related downtime",
+          "60% faster incident response times"
         ]
       }
     }
   ];
 
   const stats = [
-    { icon: <FiUsers size={24} />, value: "150+", label: "Satisfied Clients" },
-    { icon: <FiGlobe size={24} />, value: "12", label: "Countries Served" },
-    { icon: <FiLayers size={24} />, value: "300+", label: "Projects Completed" }
+    { icon: <FiUsers size={24} />, value: "500+", label: "Clients Served" },
+    { icon: <FiServer size={24} />, value: "1,200+", label: "Servers Managed" },
+    { icon: <FiLayers size={24} />, value: "300+", label: "Security Installations" }
   ];
 
   return (
@@ -118,9 +118,9 @@ const Choose = () => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             viewport={{ once: true, margin: "-50px" }}
           >
-            <Subtitle>WHY WE STAND OUT</Subtitle>
+            <Subtitle>WHY CHOOSE WIRELY</Subtitle>
             <Title>
-              Enterprise-Grade Solutions <Highlight>Built Different</Highlight>
+              Professional <Highlight>IT Infrastructure</Highlight> Solutions
             </Title>
             <Underline
               initial={{ scaleX: 0 }}
@@ -129,7 +129,7 @@ const Choose = () => {
               viewport={{ once: true }}
             />
             <Description>
-              We combine technical excellence with business acumen to deliver transformative digital experiences.
+              We deliver reliable, secure, and scalable IT infrastructure that powers your business operations and protects your valuable assets.
             </Description>
           </motion.div>
         </Header>

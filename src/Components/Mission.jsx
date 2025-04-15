@@ -1,120 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { motion } from 'framer-motion';
-// import { Target } from 'lucide-react';
-
-// const MissionSection = () => {
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   const missions = [
-//     {
-//       title: "Satisfied Customer Ratings",
-//       description: "Building Trust Through Excellence",
-//       details: "Consistently delivering high-quality solutions that exceed customer expectations.",
-//       image: "https://upraise.io/wp-content/uploads/2021/03/Group-203-1.svg"
-//     },
-//     {
-//       title: "Solutions at the Earliest",
-//       description: "Rapid Problem Resolution",
-//       details: "Providing swift and efficient solutions to minimize downtime and maximize productivity.",
-//       image: "https://vectormine.b-cdn.net/wp-content/uploads/professions-1.jpg"
-//     },
-//     {
-//       title: "Empowering Users Through Technology",
-//       description: "Transformative Digital Experiences",
-//       details: "Leveraging cutting-edge technology to empower users and enhance their capabilities.",
-//       image: "https://i.pinimg.com/736x/bc/f9/f1/bcf9f1e36a0b25ae421a6fc801bd5529.jpg"
-//     },
-//     {
-//       title: "Bridging People and Technicians",
-//       description: "Connecting Expertise with Needs",
-//       details: "Creating seamless connections between users and technical professionals.",
-//       image: "https://i.pinimg.com/736x/46/a8/4a/46a84a7953abee83c0d2d57c95e3880b.jpg"
-//     }
-//   ];
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setCurrentIndex((prev) => (prev + 1) % missions.length);
-//     }, 3000);
-
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   return (
-//     <section className="font-[Poppins] flex flex-col lg:flex-row items-center justify-center gap-8 px-4 md:px-8 py-12 min-h-screen w-full bg-white">
-//       {/* Left Side - Clean Text Content */}
-//       <div className="w-full lg:w- xl:w-2/5 flex flex-col items-center justify-center px-4 lg:px-8 text-center lg:text-left max-w-3xl mx-auto">
-//         <div className="mb-8 w-full">
-//           <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold mb-4">
-//             <span className="text-black">Our</span> <span className="text-yellow-500">Mission</span>
-//           </h2>
-//           <p className="text-sm md:text-base lg:text-lg text-gray-600 mb-6">
-//             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-//           </p>
-//         </div>
-
-//         <motion.div 
-//           key={currentIndex}
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           exit={{ opacity: 0, y: -20 }}
-//           transition={{ duration: 0.5 }}
-//           className="w-full"
-//         >
-//           <div className="flex items-center justify-center lg:justify-start mb-2">
-//             <Target className="text-yellow-500 w-5 h-5 mr-2 flex-shrink-0" />
-//             <h3 className="text-lg md:text-xl font-semibold text-gray-800">
-//               {missions[currentIndex].title}
-//             </h3>
-//           </div>
-//           <p className="text-sm md:text-base text-gray-700 mb-4">
-//             {missions[currentIndex].description}
-//           </p>
-
-//           <div className="w-full flex justify-center mb-4">
-//             <img 
-//               src={missions[currentIndex].image} 
-//               alt={missions[currentIndex].title}
-//               className="w-full max-w-[280px] h-auto aspect-[260/172] object-cover rounded-lg"
-//             />
-//           </div>
-//         </motion.div>
-
-//         <div className="flex justify-center space-x-2 mt-4">
-//           {missions.map((_, index) => (
-//             <div 
-//               key={index} 
-//               className={`w-2 h-2 rounded-full transition-colors ${
-//                 index === currentIndex 
-//                   ? 'bg-yellow-500' 
-//                   : 'bg-gray-300'
-//               }`}
-//             />
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* Right Side - Image */}
-//       <div className="relative w-1020 h-720 lg:w-1/2 xl:w-2/5 flex justify-center mt-8 lg:mt-0">
-//         <motion.img 
-//           src="https://upraise.io/wp-content/uploads/2021/03/Layer-2-2-1-2.svg"
-//           alt="Mission Illustration"
-//           className="w-full max-w-md lg:max-w-2xl xl:max-w-3xl"
-//           animate={{ y: [0, -10, 0] }}
-//           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-//         />
-
-//         <div className="absolute -top-4 left-6 w-4 h-4 md:w-6 md:h-6 bg-yellow-500 rounded-full opacity-50"></div>
-//         <div className="absolute bottom-4 right-10 w-4 h-4 md:w-6 md:h-6 bg-yellow-500 rounded-full opacity-50"></div>
-//         <div className="absolute top-1/4 left-14 w-5 h-5 md:w-8 md:h-8 bg-yellow-400 rounded-full opacity-60"></div>
-//         <div className="absolute bottom-1/3 right-16 w-5 h-5 md:w-8 md:h-8 bg-yellow-600 rounded-full opacity-70"></div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default MissionSection;
-
 "use client"
 import { motion } from "framer-motion"
 import { Target, Eye, Gem, Circle, Triangle, Square, Star } from "lucide-react"
@@ -124,19 +7,19 @@ const cards = [
         id: 1,
         title: "Our Mission",
         icon: <Target size={40} className="text-[#fbc800]" />,
-        description: "To empower individuals and businesses with innovative solutions that drive progress, efficiency, and sustainability.",
+        description: "To deliver robust IT infrastructure solutions that enhance business efficiency, security, and reliability while ensuring exceptional client satisfaction and technical excellence.",
     },
     {
         id: 2,
         title: "Our Vision",
         icon: <Eye size={40} className="text-[#fbc800]" />,
-        description: "To be a global leader in cutting-edge technology, fostering a future where innovation and ethical values shape a better world.",
+        description: "To become the premier provider of integrated IT infrastructure services, recognized for our technical expertise, innovation, and ability to future-proof businesses in an evolving digital landscape.",
     },
     {
         id: 3,
         title: "Our Values",
         icon: <Gem size={40} className="text-[#fbc800]" />,
-        description: "Integrity, innovation, and inclusivity define our core principles, ensuring trust, excellence, and collaboration in everything we do.",
+        description: "Reliability, expertise, and transparency form our foundation. We believe in proactive solutions, continuous learning, and building lasting partnerships with our clients through trustworthy service.",
     },
 ]
 
@@ -216,7 +99,7 @@ const MissionVisionValues = () => {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="inline-block px-4 py-1 md:px-6 md:py-2 bg-gradient-to-r from-[#ffa100]/10 to-[#fbc800]/10 rounded-full text-sm md:text-base text-[#ffa100] font-medium mb-4 md:mb-6 lg:mb-8"
                     >
-                        Welcome to Our Solution
+                        Infrastructure Excellence
                     </motion.div>
                     <motion.h1
                         className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#372828] mb-4 md:mb-6 tracking-tight leading-tight"
@@ -224,7 +107,7 @@ const MissionVisionValues = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
                     >
-                        Building the <span className="text-[#ffa100]">Future</span>
+                        Powering Your <span className="text-[#ffa100]">Digital Foundation</span>
                     </motion.h1>
                     <motion.p
                         className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl md:max-w-3xl mx-auto leading-relaxed"
@@ -232,7 +115,7 @@ const MissionVisionValues = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
                     >
-                        Discover how our principles guide us to create innovative solutions for tomorrow's challenges
+                        Our guiding principles drive us to deliver secure, reliable, and scalable IT infrastructure solutions that empower your business growth
                     </motion.p>
                 </div>
             </motion.div>
@@ -245,7 +128,7 @@ const MissionVisionValues = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.5 }}
                 >
-                    <span className="text-[#ffa100]">CORE</span> POLICIES
+                    <span className="text-[#ffa100]">GUIDING</span> PRINCIPLES
                 </motion.h2>
                 <motion.div
                     className="flex flex-col gap-1 md:gap-2"
