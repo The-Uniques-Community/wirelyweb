@@ -145,9 +145,9 @@ const Navbar = () => {
           >
             <Link to="/" className="flex items-center">
               <img
-                src="https://ghc53p2bgg.ufs.sh/f/47CofKs94FnTI3LXexAi9tm1GlkdxoZwpsugDFHvWrN3KfbU"
+                src="https://bmnmsbiymz.ufs.sh/f/1V3V2P4kpAum8fKWgPXlJfrKGuWUjb4n6NYRd3wE9DxCgy0v"
                 alt="Wirely Logo"
-                className="h-[6rem] w-auto md:h-[8rem] transition-all duration-300"
+                className="h-[2rem] w-auto md:h-[4rem] transition-all duration-300"
               />
             </Link>
           </motion.div>
