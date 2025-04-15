@@ -90,7 +90,7 @@ const CategoryGrid = () => {
 
   return (
     <>
-      <div className="w-full relative bottom-40 font-[Poppins] mt-28 md:mt-0 md:w-4/5 mx-auto p-4 md:p-6">
+      <div className="w-full relative -top-24 bottom-40 font-[Poppins] mt-28 md:mt-10 md:w-4/5 mx-auto p-4 md:p-6">
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>

@@ -5,6 +5,7 @@ import {
   createMainCategory,
   createSubCategory ,
   bulkCreateMainCategories,
+  getSubCategoriesByMain,
   bulkCreateSubCategories,
   getSubCategoriesById
 } from '../controllers/categoryController.js';
@@ -13,8 +14,10 @@ const router = express.Router();
 
 // GET routes
 router.get('/main', getMainCategories);
-router.get('/sub/:mainId', getSubCategories);
-router.get('/subone/:subId', getSubCategoriesById); // For all subcategories
+router.get('/sub/:mainId', getSubCategoriesByMain);
+router.get('/subone/:subId', getSubCategoriesById); 
+// For all subcategories
+router.get('/sub', getSubCategories); // This will fetch all subcategories
 
 // POST routes
 router.post('/main', createMainCategory);

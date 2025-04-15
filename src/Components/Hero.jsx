@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { 
+  fetchMainCategories, 
+  fetchSubCategories,
+  // Don't import these actions that control FamousServices modal
+  // selectMainCategory, 
+  // closeModal 
+} from "../redux/slices/categorySlice";
 import Cctv from '../assets/cctv.png';
 import Cctv2 from '../assets/cctv2.png';
 import Pc from '../assets/pc.png';
@@ -7,6 +16,86 @@ import Pc2 from '../assets/pc2.png';
 import Windows from '../assets/windows.png';
 import Windows2 from '../assets/windows2.png';
 import DataRecovery from '../assets/data recovery.png';
+
+// Service category modal component using local state only
+const ServiceModal = ({ isOpen, onClose, selectedCategory }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { subCategories, loading } = useSelector(state => state.categories);
+  
+  useEffect(() => {
+    if (selectedCategory && isOpen) {
+      dispatch(fetchSubCategories(selectedCategory._id));
+    }
+  }, [dispatch, selectedCategory, isOpen]);
+  
+  const currentSubCategories = selectedCategory ? 
+    (subCategories[selectedCategory._id] || []) : [];
+
+  const handleSubCategoryClick = (subCategory) => {
+    navigate(`/book/${subCategory._id}`);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[80vh] overflow-hidden">
+        <div className="flex justify-between items-center p-4 border-b">
+          <h3 className="text-lg font-bold text-gray-800">
+            {selectedCategory?.name || "Services"}
+          </h3>
+          <button 
+            className="p-1 rounded-full hover:bg-gray-100"
+            onClick={onClose}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-500">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <div className="p-4 overflow-y-auto max-h-[calc(80vh-80px)]">
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {currentSubCategories.map((subCategory) => (
+                <div
+                  key={subCategory._id}
+                  className="p-4 border border-gray-200 rounded-lg hover:border-amber-300 hover:shadow-md transition-all cursor-pointer"
+                  onClick={() => handleSubCategoryClick(subCategory)}
+                >
+                  <div className="flex items-center">
+                    <div className="bg-amber-100 p-2 rounded-lg mr-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-800">{subCategory.name}</h4>
+                      <p className="text-sm text-gray-500">{subCategory.description || "Professional service"}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              {currentSubCategories.length === 0 && !loading && (
+                <div className="col-span-full text-center py-8 text-gray-500">
+                  No services found in this category
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function RotatingText({
   texts,
@@ -46,6 +135,75 @@ export default function BusinessDirectory() {
   const [location, setLocation] = useState("Mumbai");
   const [search, setSearch] = useState("");
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  
+  const dispatch = useDispatch();
+  const { mainCategories, loading } = useSelector(state => state.categories);
+  
+  useEffect(() => {
+    dispatch(fetchMainCategories());
+  }, [dispatch]);
+  
+  // Map service titles to keywords that might appear in main categories
+  const serviceKeywords = {
+    "CCTV Installation": ["cctv", "security", "surveillance", "camera"],
+    "PC Repair": ["pc", "computer", "repair", "laptop"],
+    "Windows Installation": ["windows", "os", "operating system", "software"],
+    "Accessories & Spares": ["accessories", "parts", "spares", "hardware"],
+    "Data Recovery": ["data", "recovery", "backup", "restore"],
+  };
+  
+  // Function to find the matching main category based on service title
+  const findMainCategory = (serviceTitle) => {
+    if (!mainCategories || mainCategories.length === 0) {
+      return null;
+    }
+    
+    const keywords = serviceKeywords[serviceTitle] || [];
+    
+    // Check for exact match first
+    const exactMatch = mainCategories.find(
+      cat => cat.name.toLowerCase() === serviceTitle.toLowerCase()
+    );
+    
+    if (exactMatch) {
+      return exactMatch;
+    }
+    
+    // Then check for keyword matches
+    for (const keyword of keywords) {
+      const matchingCategory = mainCategories.find(
+        cat => cat.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+      
+      if (matchingCategory) {
+        return matchingCategory;
+      }
+    }
+    
+    // If no matches, return the first category (fallback)
+    return mainCategories.length > 0 ? mainCategories[0] : null;
+  };
+
+  const handleExploreService = (service) => {
+    const category = findMainCategory(service.title);
+    console.log("Service clicked:", service.title, "Category:", category?.name);
+    
+    if (category) {
+      // Only use local state, don't dispatch Redux actions that control the FamousServices modal
+      setSelectedCategory(category);
+      setIsModalOpen(true);
+    } else {
+      console.error("No matching main category found for service:", service.title);
+    }
+  };
+
+  const closeModal = () => {
+    console.log("Closing modal");
+    setIsModalOpen(false);
+    // Don't dispatch closeModal() since it would affect FamousServices
+  };
 
   const services = [
     {
@@ -250,7 +408,8 @@ export default function BusinessDirectory() {
                       {(hoveredCard === index ||
                         (index === 0 && hoveredCard === null)) && (
                         <button
-                          className={`flex items-center mt-3 text-xs font-medium ${service.text} bg-white px-3 py-1.5 rounded-md shadow-sm hover:shadow transition-all hover:scale-[1.02] active:scale-95 w-full sm:w-auto`}
+                          onClick={() => handleExploreService(service)}
+                          className={`z-50 cursor-pointer flex items-center mt-3 text-xs font-medium ${service.text}  bg-white px-3 py-1.5 rounded-md shadow-sm hover:shadow transition-all hover:scale-[1.02] active:scale-95 w-full sm:w-auto`}
                         >
                           Explore Now
                           <svg
@@ -327,6 +486,22 @@ export default function BusinessDirectory() {
           </div>
         </div>
       </main>
+      
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <ServiceModal 
+              isOpen={isModalOpen} 
+              onClose={closeModal}
+              selectedCategory={selectedCategory}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
