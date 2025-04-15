@@ -16,7 +16,7 @@ const TestimonialGrid = () => {
       name: 'Priya Sharma',
       role: 'Operations Head, TechFusion',
       image: 'https://randomuser.me/api/portraits/women/44.jpg',
-      review: 'The structured cabling installation by Wirely\'s team exceeded our expectations. Despite our complex office layout, they completed the project on schedule and within budget. The network speed improved dramatically, and their cable management is impeccable—our server room finally looks organized! Their team was professional and minimized disruption to our daily operations.',
+      review: 'The structured cabling installation by Wirely\'s team exceeded our expectations.',
       rating: 4
     },
     {
@@ -24,7 +24,7 @@ const TestimonialGrid = () => {
       name: 'Vikram Singh',
       role: 'Security Manager, FinSecure Ltd.',
       image: 'https://randomuser.me/api/portraits/men/22.jpg',
-      review: 'As a financial services firm, security is critical for us. Wirely implemented a comprehensive security system with biometric access control and CCTV monitoring that has significantly enhanced our premises security. Their team conducted a thorough assessment, identified vulnerabilities in our existing setup, and proposed a tailored solution that met our regulatory requirements. The installation was completed ahead of schedule, and their training for our staff was exceptional. We\'ve already recommended them to several partners in the industry.',
+      review: 'As a financial services firm, security is critical for us. Wirely implemented a comprehensive security system with biometric access control and CCTV monitoring that has significantly enhanced our premises security. Their team conducted a thorough assessment, identified vulnerabilities in our existing setup, and proposed a tailored solution that met our regulatory requirements. ',
       rating: 5
     },
     {
@@ -32,7 +32,7 @@ const TestimonialGrid = () => {
       name: 'Ananya Patel',
       role: 'CTO, GrowthWave Technologies',
       image: 'https://randomuser.me/api/portraits/women/67.jpg',
-      review: 'When our data center experienced a catastrophic failure, Wirely\'s recovery team was on-site within 2 hours. They not only recovered 98% of our critical data but also implemented a robust backup system to prevent future incidents. Their disaster recovery planning has given us peace of mind, and their ongoing server management service has improved our system performance by 40%. What sets them apart is their proactive approach—they identify and resolve potential issues before they become problems. Worth every rupee invested.',
+      review: 'When our data center experienced a catastrophic failure, Wirely\'s recovery team was on-site within 2 hours. They not only recovered 98% of our critical data but also implemented a robust backup system to prevent future incidents.',
       rating: 5
     },
     {
@@ -40,7 +40,7 @@ const TestimonialGrid = () => {
       name: 'Arjun Reddy',
       role: 'Startup Founder, InnoLabs',
       image: 'https://randomuser.me/api/portraits/men/28.jpg',
-      review: 'As a startup with limited resources, we were worried about investing in expensive IT infrastructure. Wirely provided a scalable solution that fit our budget while allowing for future growth. Their hardware recommendations and configuration saved us nearly 30% compared to other quotes we received. Honest, reliable service.',
+      review: 'we were worried about investing in expensive IT infrastructure but wirely removed those worries. ',
       rating: 4
     },
     {
@@ -48,7 +48,7 @@ const TestimonialGrid = () => {
       name: 'Neha Kapoor',
       role: 'Office Administrator, Delhi First Consultancy',
       image: 'https://randomuser.me/api/portraits/women/75.jpg',
-      review: 'The firewall installation and network security setup by Wirely has been reliable, though we had some initial configuration issues. Their team was responsive in addressing these problems, and we\'ve had a secure network since then. Their documentation could be more user-friendly for non-technical staff.',
+      review: 'The firewall installation and network security setup by Wirely has been reliable.',
       rating: 3
     }
   ];
@@ -78,7 +78,7 @@ const TestimonialGrid = () => {
     <div className="bg-gray-50 font-[Poppins] py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-2xl font-bold text-yellow-500 text-center mb-6 sm:text-3xl sm:mb-8 md:text-4xl md:mb-12">
-          What Our Clients Say
+          What Our Users Love
         </h2>
         
         <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3 md:gap-6 md:auto-rows-fr">
