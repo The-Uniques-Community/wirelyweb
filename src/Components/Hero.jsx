@@ -517,7 +517,7 @@ export default function BusinessDirectory() {
   };
 
   return (
-    <div className="min-h-screen font-[Poppins] mt-20 bg-gray-50">
+    <div className=" font-[Poppins] mt-20 bg-gray-50">
       <style jsx global>{`
         @import url("https://fonts.cdnfonts.com/css/open-sauce-one");
         body {
