@@ -254,13 +254,13 @@ export default function SubscriptionPlans() {
                   </ul>
 
                   {/* CTA Button */}
-                  <button
+                  {/* <button
                     className={`w-full py-3 px-4 rounded-lg text-white font-medium ${plan.buttonColor} transition-all duration-300 flex items-center justify-center group relative overflow-hidden shadow-md`}
                   >
                     <span className="relative z-10">Get Started</span>
                     <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10" />
                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                  </button>
+                  </button> */}
                 </div>
 
                 {/* Technical Pattern Bottom */}

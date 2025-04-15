@@ -13,7 +13,12 @@ import {
   LifeBuoy,
   Settings,
   Database,
-  Lock
+  Lock,
+  HardDrive,
+  Wrench,
+  WifiIcon,
+  Camera,
+  Fingerprint
 } from "lucide-react"
 
 export default function FeaturesSection() {
@@ -30,51 +35,51 @@ export default function FeaturesSection() {
 
   const features = [
     {
-      icon: <Headphones className="w-6 h-6" />,
-      title: "24/7 Support",
-      description: "Round-the-clock assistance from our expert technicians",
+      icon: <Server className="w-6 h-6" />,
+      title: "Server Management",
+      description: "Comprehensive monitoring and administration of your critical server infrastructure",
       color: colors.primary
-    },
-    {
-      icon: <Zap className="w-6 h-6" />,
-      title: "Instant Diagnostics",
-      description: "Real-time system analysis for quick problem resolution",
-      color: colors.secondary
     },
     {
       icon: <Shield className="w-6 h-6" />,
-      title: "Advanced Security",
-      description: "Protection against all modern digital threats",
-      color: colors.accent
-    },
-    {
-      icon: <Server className="w-6 h-6" />,
-      title: "Server Monitoring",
-      description: "Continuous oversight of your critical infrastructure",
-      color: colors.primary
-    },
-    {
-      icon: <Globe className="w-6 h-6" />,
-      title: "Global Coverage",
-      description: "Support available in every timezone",
+      title: "Firewall Installation",
+      description: "Custom security solutions to protect your network from unauthorized access and threats",
       color: colors.secondary
     },
     {
-      icon: <Settings className="w-6 h-6" />,
-      title: "Custom Solutions",
-      description: "Tailored configurations for your unique needs",
+      icon: <WifiIcon className="w-6 h-6" />,
+      title: "Structured Cabling",
+      description: "Professional network cable installation for reliable, high-speed connectivity",
       color: colors.accent
     },
     {
-      icon: <Database className="w-6 h-6" />,
-      title: "Data Recovery",
-      description: "Emergency retrieval of lost or corrupted files",
+      icon: <Camera className="w-6 h-6" />,
+      title: "Security Cameras",
+      description: "Advanced CCTV systems with remote monitoring capabilities for complete premises security",
       color: colors.primary
     },
     {
-      icon: <Lock className="w-6 h-6" />,
-      title: "Encrypted Backups",
-      description: "Secure storage of your critical data",
+      icon: <Fingerprint className="w-6 h-6" />,
+      title: "Biometric Solutions",
+      description: "Sophisticated access control systems using fingerprint, facial recognition, and other biometrics",
+      color: colors.secondary
+    },
+    {
+      icon: <Database className="w-6 h-6" />,
+      title: "Data Storage",
+      description: "Scalable, secure storage solutions for all your business data needs",
+      color: colors.accent
+    },
+    {
+      icon: <HardDrive className="w-6 h-6" />,
+      title: "Recovery Solutions",
+      description: "Emergency data recovery and business continuity planning to minimize downtime",
+      color: colors.primary
+    },
+    {
+      icon: <Settings className="w-6 h-6" />,
+      title: "Computer Hardware",
+      description: "Quality hardware procurement, installation, and maintenance services for your workstations",
       color: colors.secondary
     }
   ]
@@ -96,7 +101,7 @@ export default function FeaturesSection() {
               className="px-4 py-2 rounded-full bg-[#fbc800]/10 text-[#fbc800] text-sm font-medium flex items-center justify-center mx-auto w-fit"
             >
               <Zap className="w-4 h-4 mr-2 fill-[#fbc800]" />
-              PREMIUM FEATURES
+              INFRASTRUCTURE SOLUTIONS
             </div>
           </motion.div>
 
@@ -107,7 +112,7 @@ export default function FeaturesSection() {
             className="text-4xl md:text-5xl font-bold mb-4"
             style={{ color: colors.text }}
           >
-            Everything You Need to Stay Protected
+            Complete IT Infrastructure Services
           </motion.h2>
 
           <motion.p
@@ -116,7 +121,7 @@ export default function FeaturesSection() {
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-600 max-w-4xl mx-auto"
           >
-            Comprehensive tools and services designed for maximum uptime and peace of mind
+            End-to-end hardware, networking, and security solutions for your business
           </motion.p>
         </div>
 
@@ -129,22 +134,23 @@ export default function FeaturesSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + index * 0.05 }}
               whileHover={{ y: -5 }}
-              className="relative"
+              className="relative group" // Added 'group' class here
             >
               <div className="absolute inset-0 bg-white rounded-xl shadow-md border border-gray-200 group-hover:border-[#fbc800]/30 transition-colors" />
               
               <div className="relative h-full p-6 rounded-xl bg-white">
                 <div 
-                  className="w-12 h-12 rounded-lg mb-4 flex items-center justify-center"
+                  className="w-12 h-12 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 group-hover:scale-110"
                   style={{
                     background: `${feature.color}10`,
-                    border: `1px solid ${feature.color}20`
+                    border: `1px solid ${feature.color}20`,
+                    color: feature.color
                   }}
                 >
                   {feature.icon}
                 </div>
                 <h3 
-                  className="text-lg font-semibold mb-2"
+                  className="text-lg font-semibold mb-2 transition-colors group-hover:text-[#fbc800]"
                   style={{ color: colors.text }}
                 >
                   {feature.title}
@@ -173,16 +179,16 @@ export default function FeaturesSection() {
           className="mt-20 grid md:grid-cols-3 gap-8 bg-white rounded-2xl p-8 shadow-md border border-gray-200"
         >
           <div className="text-center">
-            <div className="text-5xl font-bold mb-2" style={{ color: colors.primary }}>99.9%</div>
-            <p className="text-gray-600">Uptime Guarantee</p>
+            <div className="text-5xl font-bold mb-2" style={{ color: colors.primary }}>500+</div>
+            <p className="text-gray-600">Projects Completed</p>
           </div>
           <div className="text-center">
-            <div className="text-5xl font-bold mb-2" style={{ color: colors.primary }}>24/7</div>
-            <p className="text-gray-600">Support Availability</p>
-          </div>
-          <div className="text-center">
-            <div className="text-5xl font-bold mb-2" style={{ color: colors.primary }}>30s</div>
+            <div className="text-5xl font-bold mb-2" style={{ color: colors.primary }}>4hr</div>
             <p className="text-gray-600">Average Response Time</p>
+          </div>
+          <div className="text-center">
+            <div className="text-5xl font-bold mb-2" style={{ color: colors.primary }}>98%</div>
+            <p className="text-gray-600">Client Satisfaction</p>
           </div>
         </motion.div> */}
       </div>

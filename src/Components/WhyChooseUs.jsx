@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, FileSearch, Rocket, ChevronRight, ChevronLeft } from "lucide-react";
+import { Shield, Award, Clock, Users, ChevronRight, ChevronLeft } from "lucide-react";
+import whychoseusimg from "../assets/whychoseusimg.jpg";
+import whychoseusgaurantee from "../assets/whychoseusgaurantee.png";
+import whychoseus5 from "../assets/whychoseus5.jpg";
+import whychoseus4 from "../assets/whychoseus4.jpg";
 
 export default function ProcessFlowWave() {
   const [activeStep, setActiveStep] = useState(0);
@@ -71,42 +75,39 @@ export default function ProcessFlowWave() {
   const steps = [
     {
       id: 1,
-      title: "Discovery & Analysis",
+      title: "Expert Technicians",
       description:
-        "We conduct comprehensive research and stakeholder interviews to fully understand your business objectives and technical requirements.",
-      icon: <FileSearch className="w-4 h-4 md:w-5 md:h-5" />,
+        "Our team consists of certified professionals with years of experience in their fields, ensuring top-quality service for all your technical needs.",
+      icon: <Award className="w-4 h-4 md:w-5 md:h-5" />,
       color: primaryColor,
-      image: (
-        <svg width="100%" height="100%" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet">
-          {/* SVG content */}
-        </svg>
-      ),
+      image: whychoseusimg,
     },
     {
       id: 2,
-      title: "Solution Development",
+      title: "Guaranteed Satisfaction",
       description:
-        "Our certified experts architect and implement robust solutions using industry best practices and cutting-edge technologies.",
-      icon: <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />,
+        "We stand behind our work with a 100% satisfaction guarantee. If you're not completely satisfied, we'll make it right or refund your money.",
+      icon: <Shield className="w-4 h-4 md:w-5 md:h-5" />,
       color: primaryColor,
-      image: (
-        <svg width="100%" height="100%" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet">
-          {/* SVG content */}
-        </svg>
-      ),
+      image: whychoseusgaurantee,
     },
     {
       id: 3,
-      title: "Deployment & Optimization",
+      title: "Fast & Reliable Service",
       description:
-        "We ensure seamless implementation with comprehensive documentation, training, and continuous performance monitoring.",
-      icon: <Rocket className="w-4 h-4 md:w-5 md:h-5" />,
+        "We understand your time is valuable. That's why we offer quick response times and efficient service delivery without compromising quality.",
+      icon: <Clock className="w-4 h-4 md:w-5 md:h-5" />,
       color: primaryColor,
-      image: (
-        <svg width="100%" height="100%" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet">
-          {/* SVG content */}
-        </svg>
-      ),
+      image:whychoseus4,
+    },
+    {
+      id: 4,
+      title: "Customer-Centric Approach",
+      description:
+        "We put your needs first, offering personalized solutions and dedicated support throughout your service experience with us.",
+      icon: <Users className="w-4 h-4 md:w-5 md:h-5" />,
+      color: primaryColor,
+      image: whychoseus5,
     },
   ];
 
@@ -125,19 +126,19 @@ export default function ProcessFlowWave() {
   };
 
   return (
-    <section className="w-full font-[Poppins] bg-white py-6 sm:py-10 md:py-16 relative bottom-24   overflow-hidden process-container">
+    <section className="w-full font-[Poppins] bg-white py-6 sm:py-10 md:py-16 relative bottom-24 overflow-hidden process-container">
       <div className="container mx-auto px-4 sm:px-6 max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-[80%] relative z-10">
         <header className="text-center mb-8 sm:mb-12 md:mb-16 lg:mb-20">
           <div className="inline-block mb-2 sm:mb-3">
             <span className="px-3 py-1 bg-amber-50 text-amber-800 text-xs sm:text-sm font-medium rounded-full">
-              Enterprise Methodology
+              The Wirely Advantage
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 text-gray-900">
-            Our <span style={{ color: primaryColor }}>Strategic Process</span>
+            Why <span style={{ color: primaryColor }}>Choose Us</span>
           </h2>
           <p className="max-w-2xl mx-auto text-gray-600 text-xs sm:text-sm md:text-base">
-            A structured approach to delivering measurable business outcomes through technology excellence
+            Delivering exceptional service and technical excellence that keeps our customers coming back
           </p>
         </header>
 
@@ -172,7 +173,7 @@ export default function ProcessFlowWave() {
                         "border-gray-100 bg-white hover:shadow-sm"
                       }`}
                     >
-                      <div className="flex items-center mb-1 sm:mb-2">
+                      <div className="flex items-center mb-2 sm:mb-3">
                         <div 
                           className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white font-bold mr-2 sm:mr-3 text-xs sm:text-sm"
                           style={{ backgroundColor: primaryColor }}
@@ -181,6 +182,16 @@ export default function ProcessFlowWave() {
                         </div>
                         <h3 className="text-sm sm:text-base font-bold text-gray-900">{step.title}</h3>
                       </div>
+                      
+                      {/* Added image for mobile view */}
+                      {/* <div className="w-full h-32 sm:h-40 mb-2 sm:mb-3 rounded-md overflow-hidden">
+                        <img 
+                          src={step.image} 
+                          alt={step.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div> */}
+                      
                       <p className="text-gray-600 text-xs sm:text-sm">{step.description}</p>
                     </div>
                   </div>
@@ -192,7 +203,7 @@ export default function ProcessFlowWave() {
 
         {/* Desktop Wave Path with Cards */}
         {!isMobile && (
-          <div className="relative mb-10 sm:mb-12 md:mb-16">
+          <div className="relative top-10 mb-10 sm:mb-12 md:mb-16">
             <div className={`relative ${getWaveHeight()} my-12 sm:my-16 md:my-20 lg:my-24`}>
               <svg
                 className="w-full h-full absolute top-0 left-0"
@@ -274,7 +285,7 @@ export default function ProcessFlowWave() {
                           ringColor: primaryColor,
                         }}
                         onClick={() => setActiveStep(index)}
-                        aria-label={`Step ${step.id}: ${step.title}`}
+                        aria-label={`Benefit ${step.id}: ${step.title}`}
                       >
                         <div className="flex items-center p-3 sm:p-4 border-b border-gray-100">
                           <div
@@ -285,6 +296,15 @@ export default function ProcessFlowWave() {
                           </div>
                           <h3 className="text-sm sm:text-base font-bold text-gray-900">{step.title}</h3>
                         </div>
+
+                        {/* Added image to card */}
+                        {/* <div className="w-full h-36 sm:h-40">
+                          <img 
+                            src={step.image} 
+                            alt={step.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div> */}
 
                         <div className="p-2 sm:p-3">
                           <p className="text-gray-600 text-xs sm:text-sm">{step.description}</p>
@@ -298,7 +318,7 @@ export default function ProcessFlowWave() {
                             >
                               {step.icon}
                             </span>
-                            <span className="text-xs font-medium text-gray-500">Phase {step.id}</span>
+                            <span className="text-xs font-medium text-gray-500">Advantage {step.id}</span>
                           </div>
 
                           <div
@@ -341,12 +361,17 @@ export default function ProcessFlowWave() {
         <div
           className={`max-w-full sm:max-w-3xl mx-auto transition-all duration-500 ${
             isVisible ? "opacity-100 transform translate-y-0" : "opacity-0 transform translate-y-10"
-          } ${isMobile ? "mt-4 sm:mt-6" : "mt-12 sm:mt-16 md:mt-20 lg:mt-24"}`}
+          } ${isMobile ? "mt-4 sm:mt-6" : "mt-12 sm:mt-16 md:mt-28 lg:mt-32"}`}
         >
           <div className="bg-white rounded-lg relative md:top-16 shadow-md border overflow-hidden" style={{ borderColor: primaryColor }}>
             <div className="flex flex-col md:flex-row">
-              <div className="w-full h-48 sm:h-56 md:h-auto md:w-2/5 relative">
-                <div className="absolute inset-0">{steps[activeStep].image}</div>
+              <div className="w-full h-48 sm:h-56 md:h-auto md:w-2/5 relative overflow-hidden">
+                {/* Replace SVG with actual image */}
+                <img 
+                  src={steps[activeStep].image} 
+                  alt={steps[activeStep].title}
+                  className="w-full h-full object-cover"
+                />
                 <div
                   className="absolute top-0 left-0 w-full h-full opacity-10"
                   style={{ backgroundColor: primaryColor }}
@@ -361,7 +386,7 @@ export default function ProcessFlowWave() {
                   className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 bg-white px-2 py-1 rounded-full shadow-sm text-xs font-medium"
                   style={{ color: primaryColor }}
                 >
-                  Step {steps[activeStep].id} of {steps.length}
+                  {activeStep + 1} of {steps.length}
                 </div>
               </div>
 
@@ -381,7 +406,7 @@ export default function ProcessFlowWave() {
                   <button
                     className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium flex items-center gap-1 border hover:bg-gray-50 transition-colors"
                     onClick={() => setActiveStep((prev) => (prev - 1 + steps.length) % steps.length)}
-                    aria-label="Previous step"
+                    aria-label="Previous advantage"
                   >
                     <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
                     Previous
@@ -395,7 +420,7 @@ export default function ProcessFlowWave() {
                           activeStep === idx ? "bg-amber-500" : "bg-gray-300 hover:bg-gray-400"
                         }`}
                         onClick={() => setActiveStep(idx)}
-                        aria-label={`Go to step ${idx + 1}`}
+                        aria-label={`Go to advantage ${idx + 1}`}
                       />
                     ))}
                   </div>
@@ -404,7 +429,7 @@ export default function ProcessFlowWave() {
                     className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium text-gray-900 shadow-sm transition-colors flex items-center gap-1"
                     style={{ backgroundColor: primaryColor }}
                     onClick={() => setActiveStep((prev) => (prev + 1) % steps.length)}
-                    aria-label="Next step"
+                    aria-label="Next advantage"
                   >
                     Next
                     <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -418,8 +443,7 @@ export default function ProcessFlowWave() {
         <div className="flex flex-col items-center mt-6 sm:mt-8 md:mt-10">
           <div className="text-center max-w-2xl mb-3 sm:mb-4 md:mb-6">
             <p className="text-gray-700 text-xs sm:text-sm md:text-base md:mt-16">
-              Our methodology has been refined through years of experience delivering enterprise solutions across
-              industries. Each phase is carefully designed to maximize value and minimize risk.
+              Join thousands of satisfied customers who trust Wirely for their technical needs. Our commitment to excellence and customer satisfaction sets us apart from the competition.
             </p>
           </div>
         </div>

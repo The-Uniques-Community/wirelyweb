@@ -2,10 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import '../Styles/HowItWorks.css'
 import { 
   FiClipboard, 
-  FiHome, 
+  FiSearch, 
   FiLayout, 
-  FiTool, 
-  FiCheckCircle 
+  FiServer, 
+  FiCheckCircle,
+  FiMonitor,
+  FiHardDrive,
+  FiShield
 } from 'react-icons/fi';
 
 const App = () => {
@@ -16,37 +19,37 @@ const App = () => {
   const steps = [
     {
       id: 1,
-      title: "Initial Electrical Assessment",
-      description: "We discuss your power needs, safety concerns, and project scope",
-      image: "https://i.pinimg.com/736x/a9/b0/b0/a9b0b09986adccb7f5cae0c6e6b898e5.jpg",
+      title: "Initial IT Consultation",
+      description: "We assess your infrastructure needs, security requirements, and technical objectives",
+      image: "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
       icon: <FiClipboard className="w-6 h-6" />
     },
     {
       id: 2,
-      title: "On-Site Inspection",
-      description: "Our licensed electricians evaluate your property's wiring and electrical system",
-      image: "https://i.pinimg.com/736x/10/6e/ac/106eacb794d66d69cf9fd8be7a9173b0.jpg",
-      icon: <FiHome className="w-6 h-6" />
+      title: "Infrastructure Assessment",
+      description: "Our certified technicians evaluate your current network, hardware, and security systems",
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+      icon: <FiSearch className="w-6 h-6" />
     },
     {
       id: 3,
-      title: "Custom Wiring Plan",
-      description: "We design a solution meeting all electrical codes and safety standards",
-      image: "https://i.pinimg.com/736x/f4/f0/b3/f4f0b3bb6f1208bbdf452db98acb6bc8.jpg",
+      title: "Solution Architecture",
+      description: "We design a comprehensive plan for your IT infrastructure meeting industry standards",
+      image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
       icon: <FiLayout className="w-6 h-6" />
     },
     {
       id: 4,
-      title: "Professional Installation",
-      description: "Certified technicians implement the solution with precision",
-      image: "https://i.pinimg.com/736x/f1/e4/fd/f1e4fd4d1973d89b658469acfff72552.jpg",
-      icon: <FiTool className="w-6 h-6" />
+      title: "Expert Implementation",
+      description: "Our skilled technicians deploy your custom hardware and network solutions",
+      image: "https://images.unsplash.com/photo-1588508065123-287b28e013da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+      icon: <FiServer className="w-6 h-6" />
     },
     {
       id: 5,
-      title: "Final Safety Testing",
-      description: "Comprehensive testing and certification of all work completed",
-      image: "https://i.pinimg.com/736x/e7/f6/e5/e7f6e55027e3adf6d9c9e3509e3a4a12.jpg",
+      title: "Quality Verification",
+      description: "Comprehensive testing and certification of all installed infrastructure components",
+      image: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
       icon: <FiCheckCircle className="w-6 h-6" />
     }
   ];
@@ -95,31 +98,31 @@ const App = () => {
 
   return (
     <section className="relative font-[Poppins] py-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gray-50">
-      {/* Electrical-themed background */}
+      {/* IT-themed background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Circuit board pattern */}
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: `
-            linear-gradient(to right, #f59e0b 1px, transparent 1px),
-            linear-gradient(to bottom, #f59e0b 1px, transparent 1px)
+            linear-gradient(to right, #fbc800 1px, transparent 1px),
+            linear-gradient(to bottom, #fbc800 1px, transparent 1px)
           `,
           backgroundSize: '40px 40px',
           backgroundPosition: 'center center'
         }}></div>
         
-        {/* Electrical pulse effect */}
+        {/* Technology pulse effect */}
         <div className="absolute inset-0" style={{
-          background: `radial-gradient(circle at center, rgba(245, 158, 11, 0.1) 0%, transparent 70%)`
+          background: `radial-gradient(circle at center, rgba(251, 200, 0, 0.1) 0%, transparent 70%)`
         }}></div>
       </div>
       
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-left mb-12">
           <h2 className="text-3xl font-semibold text-gray-900 sm:text-4xl">
-            Our Electrical Service Process
+            Our IT Implementation Process
           </h2>
-          <p className="mt-4 text-xltext-gray-600">
-            Professional, code-compliant solutions from certified electricians
+          <p className="mt-4 text-xl text-gray-600">
+            Professional infrastructure solutions delivered by certified IT specialists
           </p>
         </div>
 
@@ -132,7 +135,7 @@ const App = () => {
           >
             <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-200">
               <div 
-                className="absolute left-0 w-0.5 bg-yellow-500 transition-all duration-300"
+                className="absolute left-0 w-0.5 bg-[#fbc800] transition-all duration-300"
                 style={{
                   top: `${(activeStep - 1) * 120}px`,
                   height: '120px'
@@ -146,22 +149,22 @@ const App = () => {
                 data-step={step.id}
                 onClick={() => handleStepChange(step.id, index)}
                 className={`relative pl-16 pr-6 py-6 cursor-pointer transition-all duration-300 ease-in-out text-left min-h-[120px] flex items-center
-                  ${activeStep === step.id ? 'bg-white/90 backdrop-blur-sm rounded-xl shadow-md border border-yellow-200' : 'hover:bg-white/80 rounded-xl border border-transparent'}`}
+                  ${activeStep === step.id ? 'bg-white/90 backdrop-blur-sm rounded-xl shadow-md border border-[#fbc800]/30' : 'hover:bg-white/80 rounded-xl border border-transparent'}`}
               >
                 <div 
                   className={`absolute left-8 top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full flex items-center justify-center z-10
                     ${activeStep === step.id 
-                      ? 'bg-yellow-500 ring-4 ring-yellow-500/30' 
+                      ? 'bg-[#fbc800] ring-4 ring-[#fbc800]/30' 
                       : 'bg-gray-300'}`}
                 ></div>
                 
                 <div 
                   className={`absolute left-8 top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-12 h-12 rounded-full flex items-center justify-center z-20 transition-all duration-300
                     ${activeStep === step.id 
-                      ? 'bg-white shadow-lg shadow-yellow-400/50 ring-2 ring-yellow-400/30' 
+                      ? 'bg-white shadow-lg shadow-[#fbc800]/50 ring-2 ring-[#fbc800]/30' 
                       : 'bg-white/90 backdrop-blur-sm shadow-sm'}`}
                 >
-                  <div className={`transition-all duration-300 ${activeStep === step.id ? 'text-yellow-600 scale-110' : 'text-gray-600 scale-100'}`}>
+                  <div className={`transition-all duration-300 ${activeStep === step.id ? 'text-[#fbc800] scale-110' : 'text-gray-600 scale-100'}`}>
                     {step.icon}
                   </div>
                 </div>
@@ -204,10 +207,10 @@ const App = () => {
                     
                     <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 via-black/60 to-transparent">
                       <div className="flex items-center mb-3">
-                        <div className="w-12 h-12 rounded-full bg-yellow-600/80 flex items-center justify-center mr-4 text-white">
+                        <div className="w-12 h-12 rounded-full bg-[#fbc800]/80 flex items-center justify-center mr-4 text-white">
                           {step.icon}
                         </div>
-                        <span className="text-yellow-400 text-sm font-medium tracking-wider">STEP {step.id}</span>
+                        <span className="text-[#fbc800] text-sm font-medium tracking-wider">STEP {step.id}</span>
                       </div>
                       <h3 className="text-white text-2xl font-bold mb-3 text-left">
                         {step.title}
@@ -243,10 +246,10 @@ const App = () => {
                   />
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-full bg-yellow-600/80 flex items-center justify-center mr-3 text-white">
+                      <div className="w-10 h-10 rounded-full bg-[#fbc800]/80 flex items-center justify-center mr-3 text-white">
                         {step.icon}
                       </div>
-                      <span className="text-yellow-400 text-xs font-medium">STEP {step.id}</span>
+                      <span className="text-[#fbc800] text-xs font-medium">STEP {step.id}</span>
                     </div>
                     <h3 className="text-white text-lg font-bold text-left">
                       {step.title}
