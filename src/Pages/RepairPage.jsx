@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+     import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Star, Phone, Edit, MapPin, Mail, Clock, MessageCircle } from "lucide-react";
