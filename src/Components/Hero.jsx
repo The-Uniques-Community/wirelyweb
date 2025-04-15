@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import { 
   fetchMainCategories, 
   fetchSubCategories,
@@ -141,6 +142,11 @@ export default function BusinessDirectory() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const searchRef = useRef(null);
+  const navigate = useNavigate();
   
   const dispatch = useDispatch();
   const { mainCategories, loading } = useSelector(state => state.categories);
@@ -343,6 +349,173 @@ export default function BusinessDirectory() {
     },
   ];
 
+  // Add debounce function to avoid too many API calls
+  const useDebounce = (value, delay) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+    
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+      
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [value, delay]);
+    
+    return debouncedValue;
+  };
+
+  // Create debounced search term
+  const debouncedSearchTerm = useDebounce(search, 300);
+
+  // Add function to fetch search suggestions
+  const fetchSearchSuggestions = async (query) => {
+    if (!query || query.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    
+    setIsSearchLoading(true);
+    try {
+      // Updated API endpoint - changed from /api/categories/search to /api/services/search
+      const response = await axios.get(
+        `https://wirely-backend.vercel.app/api/services/search?q=${encodeURIComponent(query)}`
+      );
+      console.log("Search API response:", response.data);
+      setSuggestions(response.data);
+    } catch (error) {
+      console.error("Error fetching search suggestions:", error);
+      console.error("Error details:", error.response || error.message);
+      setSuggestions([]);
+    } finally {
+      setIsSearchLoading(false);
+    }
+  };
+
+  // Fetch suggestions when search term changes
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      fetchSearchSuggestions(debouncedSearchTerm);
+    } else {
+      setSuggestions([]);
+    }
+  }, [debouncedSearchTerm]);
+
+  // Add click outside handler to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSuggestions([]);
+      }
+    };
+    
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Add function to handle search input changes
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setSelectedSuggestionIndex(-1);
+  };
+
+  // Add function to handle keyboard navigation
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedSuggestionIndex(prev => 
+        prev < suggestions.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedSuggestionIndex(prev => prev > 0 ? prev - 1 : 0);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedSuggestionIndex >= 0 && suggestions[selectedSuggestionIndex]) {
+        handleSuggestionSelect(suggestions[selectedSuggestionIndex]);
+      } else if (suggestions.length > 0) {
+        handleSuggestionSelect(suggestions[0]);
+      } else {
+        handleSearch();
+      }
+    } else if (e.key === 'Escape') {
+      setSuggestions([]);
+    }
+  };
+
+  // Add function to handle suggestion selection
+  const handleSuggestionSelect = (suggestion) => {
+    setSearch(suggestion.name);
+    setSuggestions([]);
+    navigate(`/book/${suggestion._id}`);
+  };
+
+  // Add function to handle search button click
+  const handleSearch = () => {
+    if (search.trim() && suggestions.length > 0) {
+      handleSuggestionSelect(suggestions[0]);
+    } else if (search.trim()) {
+      // Navigate to search results page
+      navigate(`/search?query=${encodeURIComponent(search.trim())}`);
+    }
+  };
+
+  // Function to highlight matching text
+  const highlightMatch = (text, query) => {
+    if (!query || !text) return text;
+    
+    try {
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      const parts = text.split(regex);
+      
+      return (
+        <>
+          {parts.map((part, i) => 
+            regex.test(part) ? 
+            <span key={i} className="bg-amber-100">{part}</span> : 
+            <span key={i}>{part}</span>
+          )}
+        </>
+      );
+    } catch (e) {
+      return text;
+    }
+  };
+
+  // Function to get appropriate icon for each service type
+  const getServiceIcon = (suggestion) => {
+    const nameLower = suggestion.name.toLowerCase();
+    
+    if (nameLower.includes('cctv') || nameLower.includes('camera')) {
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500">
+          <path d="M13 20H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5"/>
+          <path d="M18 12v8"/>
+          <circle cx="20" cy="18" r="2"/>
+        </svg>
+      );
+    }
+    
+    if (nameLower.includes('pc') || nameLower.includes('computer') || nameLower.includes('laptop')) {
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500">
+          <rect width="18" height="12" x="3" y="4" rx="2" ry="2"/>
+          <line x1="2" x2="22" y1="20" y2="20"/>
+        </svg>
+      );
+    }
+    
+    // Default icon
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+      </svg>
+    );
+  };
+
   return (
     <div className="min-h-screen font-[Poppins] mt-20 bg-gray-50">
       <style jsx global>{`
@@ -425,15 +598,63 @@ export default function BusinessDirectory() {
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl w-full md:w-full hover:border-amber-300 transition-colors">
-              <input
-                type="text"
-                className="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400 mb-2 sm:mb-0"
-                placeholder="What are you looking for?"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <button className="bg-gradient-to-r from-amber-500 to-amber-400 text-white font-medium px-5 py-2 rounded-lg flex items-center shadow hover:shadow-md transition-all sm:ml-3 transform hover:scale-[1.02] active:scale-95 w-full sm:w-auto justify-center">
+            <div className="flex flex-col sm:flex-row items-center bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl w-full md:w-full hover:border-amber-300 transition-colors relative" ref={searchRef}>
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  className="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400 mb-2 sm:mb-0"
+                  placeholder="What are you looking for?"
+                  value={search}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleKeyDown}
+                  autoComplete="off"
+                  aria-autocomplete="list"
+                />
+                
+                {/* Loading indicator */}
+                {isSearchLoading && (
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-amber-500 border-t-transparent"></div>
+                  </div>
+                )}
+                
+                {/* Search suggestions dropdown */}
+                {suggestions.length > 0 && (
+                  <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-60 overflow-y-auto">
+                    {suggestions.map((suggestion, index) => (
+                      <div
+                        key={suggestion._id}
+                        className={`p-3 hover:bg-gray-50 cursor-pointer ${
+                          selectedSuggestionIndex === index ? 'bg-amber-50' : ''
+                        }`}
+                        onClick={() => handleSuggestionSelect(suggestion)}
+                        onMouseEnter={() => setSelectedSuggestionIndex(index)}
+                      >
+                        <div className="flex items-center">
+                          <div className="mr-2">
+                            {getServiceIcon(suggestion)}
+                          </div>
+                          <div>
+                            <div className="font-medium">
+                              {highlightMatch(suggestion.name, search)}
+                            </div>
+                            {suggestion.mainCategory && (
+                              <div className="text-xs text-gray-500">
+                                in {suggestion.mainCategory.name}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <button 
+                onClick={handleSearch}
+                className="bg-gradient-to-r from-amber-500 to-amber-400 text-white font-medium px-5 py-2 rounded-lg flex items-center shadow hover:shadow-md transition-all sm:ml-3 transform hover:scale-[1.02] active:scale-95 w-full sm:w-auto justify-center"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"

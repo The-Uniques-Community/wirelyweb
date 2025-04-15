@@ -132,3 +132,26 @@ export const bulkCreateMainCategories = async (req, res) => {
       });
     }
   };
+
+// Add this controller function
+export const searchSubCategories = async (req, res) => {
+  try {
+    const query = req.query.q;
+    
+    if (!query || query.trim().length < 2) {
+      return res.status(400).json({ message: "Search query must be at least 2 characters" });
+    }
+    
+    // Search for subcategories with names containing the query string
+    const subcategories = await SubCategory.find({ 
+      name: { $regex: query, $options: 'i' } 
+    })
+    .limit(8) // Limit to 8 results
+    .populate('mainCategory', 'name'); // Include main category name
+    
+    res.json(subcategories);
+  } catch (error) {
+    console.error("Error searching subcategories:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
