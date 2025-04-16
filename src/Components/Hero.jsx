@@ -133,7 +133,7 @@ function RotatingText({
   );
 }
 
-export default function BusinessDirectory() {
+export default function   BusinessDirectory() {
   const [location, setLocation] = useState("");
   const [isLocating, setIsLocating] = useState(false);
   const [isInServiceArea, setIsInServiceArea] = useState(true);
@@ -770,7 +770,7 @@ export default function BusinessDirectory() {
             </div>  
           ))}
 
-          <div className="h-60 w-full sm:w-1/6">
+          {/* <div className="h-60 w-full sm:w-1/6">
             <div className="bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 rounded-xl h-full overflow-hidden relative transition-all duration-300 hover:shadow-md">
               <div className="p-5 h-full flex flex-col justify-between">
                 <div>
@@ -802,7 +802,7 @@ export default function BusinessDirectory() {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
       
