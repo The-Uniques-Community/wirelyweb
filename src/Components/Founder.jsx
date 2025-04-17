@@ -23,91 +23,95 @@ const teamMembers = [
   //     twitter: "#"
   //   }
   // },
-  {
-    name: "Jitendra",
-    role: "Director",
-    image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQvOtVBks1ezMFJdUx32OANHKPm4XQqB7vkiWnf",
-    bio: "Strategic leader with a passion for education and community upliftment. Ensuring Wirely delivers effective and dependable technical services to local institutions.",
-    fact: {
-      icon: <FiUsers className="text-[#FBC800]" />,
-      text: "Actively mentors youth in tech literacy"
+  
+  
+    {
+      name: "Jitendra",
+      role: "Director",
+      image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQvOtVBks1ezMFJdUx32OANHKPm4XQqB7vkiWnf",
+      bio: "Strategic leader with a passion for education and community upliftment. Ensuring Wirely delivers effective and dependable technical services to local institutions.",
+      fact: {
+        icon: <FiUsers className="text-[#FBC800]" />,
+        text: "Guides the overall vision and strategy of Wirely"
+      },
+      social: {
+        linkedin: "#",
+        twitter: "#"
+      }
     },
-    social: {
-      linkedin: "#",
-      twitter: "#"
-    }
-  },
-  // New team members
-  {
-    name: "Abhishek Mishra",
-    role: "Tech Lead",
-    image: "https://bharat-tech-xperience.theuniques.in/static/media/abhishek3.7ef90fa80309140a198c.jpg",
-    bio: "Experienced software engineer specializing in building robust IT infrastructure. Leading Wirely's technical innovation and service quality initiatives.",
-    fact: {
-      icon: <FiCode className="text-[#FBC800]" />,
-      text: "Contributes to open-source projects on weekends"
+    {
+      name: "Abhishek Mishra",
+      role: "Tech Lead",
+      image: "https://bharat-tech-xperience.theuniques.in/static/media/abhishek3.7ef90fa80309140a198c.jpg",
+      bio: "4th-year engineering student and passionate software engineer. Leading Wirely’s technical innovation while balancing academics and open-source contributions.",
+      fact: {
+        icon: <FiCode className="text-[#FBC800]" />,
+        text: "Heads all development and backend architecture at Wirely"
+      },
+      social: {
+        linkedin: "#",
+        twitter: "#"
+      }
     },
-    social: {
-      linkedin: "#",
-      twitter: "#"
-    }
-  },
-  {
-    name: "Aryn Kamboj",
-    role: "Operations Manager",
-    image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQv1c9KkjqHbNYm7tVsZ0F15LIM8AjGX2eSCiao",
-    bio: "Logistics expert ensuring Wirely's service delivery is seamless and efficient. Passionate about optimizing processes to deliver superior customer experiences.",
-    fact: {
-      icon: <FiTrendingUp className="text-[#FBC800]" />,
-      text: "Built his first computer at age 12"
+    {
+      name: "Aryan Kamboj",
+      role: "Operations Manager",
+      image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQv1c9KkjqHbNYm7tVsZ0F15LIM8AjGX2eSCiao",
+      bio: "4th-year engineering student with a knack for process optimization. Handles Wirely’s logistics and operational strategies with fresh perspective and efficiency.",
+      fact: {
+        icon: <FiTrendingUp className="text-[#FBC800]" />,
+        text: "Manages internal workflows and service coordination"
+      },
+      social: {
+        linkedin: "#",
+        twitter: "#"
+      }
     },
-    social: {
-      linkedin: "#",
-      twitter: "#"
-    }
-  },
-  {
-    name: "Niraj Gupta",
-    role: "Customer Relations",
-    image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQv9vrK2Z6ypQvP0K4oCIMsuOxta6zbVGWDqAnf",
-    bio: "Dedicated to ensuring client satisfaction through clear communication and attentive service. Creating meaningful relationships between Wirely and its customers.",
-    fact: {
-      icon: <FiMic className="text-[#FBC800]" />,
-      text: "Speaks four languages fluently"
+    {
+      name: "Niraj Gupta",
+      role: "Customer Relations",
+      image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQv9vrK2Z6ypQvP0K4oCIMsuOxta6zbVGWDqAnf",
+      bio: "4th-year engineering student with strong interpersonal skills. Ensures Wirely’s customers stay informed and satisfied through excellent communication.",
+      fact: {
+        icon: <FiMic className="text-[#FBC800]" />,
+        text: "Handles client communications and customer feedback loops"
+      },
+      social: {
+        linkedin: "#",
+        twitter: "#"
+      }
     },
-    social: {
-      linkedin: "#",
-      twitter: "#"
-    }
-  },
-  {
-    name: "Kumar Sujal",
-    role: "Lead Technician",
-    image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQvEzb8QdgtO8RGNpF6JBKc4CzbyiAsfLIqYvMQ",
-    bio: "Expert in hardware diagnostics and repair with over a decade of experience. Leads Wirely's technical team in providing top-tier service solutions.",
-    fact: {
-      icon: <FiAward className="text-[#FBC800]" />,
-      text: "Certified in 7 technical specialties"
+    {
+      name: "Kumar Sujal",
+      role: "Lead Technician",
+      image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQvEzb8QdgtO8RGNpF6JBKc4CzbyiAsfLIqYvMQ",
+      bio: "4th-year engineering student specializing in hardware and systems. Leads Wirely’s technical team, bridging textbook knowledge with real-world repair skills.",
+      fact: {
+        icon: <FiAward className="text-[#FBC800]" />,
+        text: "Oversees on-ground technical service and hardware support"
+      },
+      social: {
+        linkedin: "#",
+        twitter: "#"
+      }
     },
-    social: {
-      linkedin: "#",
-      twitter: "#"
+    {
+      name: "Aman",
+      role: "Marketing Director",
+      image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQvfc1VYs3GMtZFS7iOKBypXRVL1NE8TJbDPWu2",
+      bio: "4th-year engineering student with a creative eye and strategic mind. Drives Wirely’s brand outreach while exploring design and digital storytelling.",
+      fact: {
+        icon: <FiPenTool className="text-[#FBC800]" />,
+        text: "Leads branding, social media campaigns, and outreach at Wirely"
+      },
+      social: {
+        linkedin: "#",
+        twitter: "#"
+      }
     }
-  },
-  {
-    name: "Aman ",
-    role: "Marketing Director",
-    image: "https://05h0tt171l.ufs.sh/f/9WspmJu6ypQvfc1VYs3GMtZFS7iOKBypXRVL1NE8TJbDPWu2",
-    bio: "Creative strategist driving Wirely's brand awareness and community engagement. Passionate about connecting technology services with those who need them most.",
-    fact: {
-      icon: <FiPenTool className="text-[#FBC800]" />,
-      text: "Amateur photographer and digital artist"
-    },
-    social: {
-      linkedin: "#",
-      twitter: "#"
-    }
-  },
+  
+  
+  
 ];
 
 const FoundersSection = () => {
