@@ -10,7 +10,8 @@ import {
   Video,
   Laptop,
   Wifi,
-  ChevronRight
+  ChevronRight,
+  ChevronUp
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllSubCategories } from "../redux/slices/categorySlice";
@@ -26,6 +27,7 @@ const Navbar = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [visibleServicesCount, setVisibleServicesCount] = useState(9); // Show 9 initially
+  const initialServicesCount = 9; // Store initial count as a constant
   const searchRef = useRef(null);
   
   const dispatch = useDispatch();
@@ -68,7 +70,12 @@ const Navbar = () => {
   
   // Handle showing more services
   const handleViewMore = () => {
-    setVisibleServicesCount(prev => Math.min(prev + 3, serviceData.length));
+    setVisibleServicesCount(prev => Math.min(prev + 6, serviceData.length));
+  };
+  
+  // Handle showing fewer services
+  const handleViewLess = () => {
+    setVisibleServicesCount(initialServicesCount);
   };
   
   // All services flattened for search
@@ -108,7 +115,7 @@ const Navbar = () => {
     } else {
       setSearchResults([]);
       setShowSearchResults(false);
-    }
+    };
   };
 
   const handleSearchSubmit = (e) => {
@@ -195,7 +202,8 @@ const Navbar = () => {
                             onMouseEnter={() => setIsServicesOpen(true)}
                             onMouseLeave={() => setIsServicesOpen(false)}
                           >
-                            <div className="p-4">
+                            {/* Added max-height and overflow for scrollable dropdown */}
+                            <div className="p-4 max-h-[400px] overflow-y-auto">
                               {loading ? (
                                 <div className="flex justify-center items-center py-6">
                                   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-500"></div>
@@ -223,17 +231,26 @@ const Navbar = () => {
                                     </tbody>
                                   </table>
                                   
-                                  {/* View More button */}
-                                  {visibleServicesCount < serviceData.length && (
-                                    <div className="mt-4 text-center">
+                                  {/* View More/Less buttons */}
+                                  <div className="mt-4 text-center flex justify-center space-x-4">
+                                    {visibleServicesCount < serviceData.length && (
                                       <button
                                         onClick={handleViewMore}
-                                        className="px-4 py-2 text-sm font-medium flex items-center justify-center mx-auto text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                                        className="px-4 py-2 text-sm font-medium flex items-center justify-center text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
                                       >
                                         View More <ChevronRight size={16} className="ml-1" />
                                       </button>
-                                    </div>
-                                  )}
+                                    )}
+                                    
+                                    {visibleServicesCount > initialServicesCount && (
+                                      <button
+                                        onClick={handleViewLess}
+                                        className="px-4 py-2 text-sm font-medium flex items-center justify-center text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                                      >
+                                        View Less <ChevronUp size={16} className="ml-1" />
+                                      </button>
+                                    )}
+                                  </div>
                                 </>
                               )}
                             </div>
@@ -321,41 +338,53 @@ const Navbar = () => {
                                 </div>
                               ) : (
                                 <>
-                                  <table className="w-full">
-                                    <tbody>
-                                      {services.map((row, rowIndex) => (
-                                        <tr key={rowIndex}>
-                                          {row.map((service, colIndex) => (
-                                            <td key={colIndex} className="p-1">
-                                              <Link
-                                                to={`/book/${service.id}`}
-                                                className="flex items-center text-xs text-gray-600 hover:text-black hover:bg-gray-50 p-2 rounded transition-colors"
-                                                onClick={() => {
-                                                  setIsServicesOpen(false);
-                                                  setIsMenuOpen(false);
-                                                }}
-                                              >
-                                                {service.icon}
-                                                {service.name}
-                                              </Link>
-                                            </td>
-                                          ))}
-                                        </tr>
-                                      ))}
-                                    </tbody>
-                                  </table>
+                                  {/* Added max-height and overflow for mobile services */}
+                                  <div className="max-h-[300px] overflow-y-auto">
+                                    <table className="w-full">
+                                      <tbody>
+                                        {services.map((row, rowIndex) => (
+                                          <tr key={rowIndex}>
+                                            {row.map((service, colIndex) => (
+                                              <td key={colIndex} className="p-1">
+                                                <Link
+                                                  to={`/book/${service.id}`}
+                                                  className="flex items-center text-xs text-gray-600 hover:text-black hover:bg-gray-50 p-2 rounded transition-colors"
+                                                  onClick={() => {
+                                                    setIsServicesOpen(false);
+                                                    setIsMenuOpen(false);
+                                                  }}
+                                                >
+                                                  {service.icon}
+                                                  {service.name}
+                                                </Link>
+                                              </td>
+                                            ))}
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
                                   
-                                  {/* View More button for mobile */}
-                                  {visibleServicesCount < serviceData.length && (
-                                    <div className="mt-3 text-center">
+                                  {/* Mobile View More/Less buttons */}
+                                  <div className="mt-3 text-center flex justify-center space-x-2">
+                                    {visibleServicesCount < serviceData.length && (
                                       <button
                                         onClick={handleViewMore}
-                                        className="px-3 py-1 text-xs font-medium flex items-center justify-center mx-auto text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                                        className="px-3 py-1 text-xs font-medium flex items-center justify-center text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
                                       >
-                                        View More <ChevronRight size={14} className="ml-1" />
+                                        More <ChevronRight size={14} className="ml-1" />
                                       </button>
-                                    </div>
-                                  )}
+                                    )}
+                                    
+                                    {visibleServicesCount > initialServicesCount && (
+                                      <button
+                                        onClick={handleViewLess}
+                                        className="px-3 py-1 text-xs font-medium flex items-center justify-center text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                                      >
+                                        Less <ChevronUp size={14} className="ml-1" />
+                                      </button>
+                                    )}
+                                  </div>
                                 </>
                               )}
                             </div>
