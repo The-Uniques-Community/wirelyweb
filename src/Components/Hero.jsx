@@ -6,9 +6,6 @@ import axios from "axios";
 import { 
   fetchMainCategories, 
   fetchSubCategories,
-  // Don't import these actions that control FamousServices modal
-  // selectMainCategory, 
-  // closeModal 
 } from "../redux/slices/categorySlice";
 import Cctv from '../assets/cctv.png';
 import Cctv2 from '../assets/cctv2.png';
@@ -17,7 +14,8 @@ import Pc2 from '../assets/pc2.png';
 import Windows from '../assets/windows.png';
 import Windows2 from '../assets/windows2.png';
 import DataRecovery from '../assets/data recovery.png';
-import { toast } from "react-hot-toast"; // Assuming you use react-hot-toast for notifications
+import { toast } from "react-hot-toast";
+import { ChevronDown } from "lucide-react";
 
 // Service category modal component using local state only
 const ServiceModal = ({ isOpen, onClose, selectedCategory }) => {
@@ -133,7 +131,7 @@ function RotatingText({
   );
 }
 
-export default function   BusinessDirectory() {
+export default function BusinessDirectory() {
   const [location, setLocation] = useState("");
   const [isLocating, setIsLocating] = useState(false);
   const [isInServiceArea, setIsInServiceArea] = useState(true);
@@ -145,7 +143,9 @@ export default function   BusinessDirectory() {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const searchRef = useRef(null);
+  const locationRef = useRef(null);
   const navigate = useNavigate();
   
   const dispatch = useDispatch();
@@ -155,12 +155,26 @@ export default function   BusinessDirectory() {
     dispatch(fetchMainCategories());
   }, [dispatch]);
   
-  // Service area cities (case insensitive)
-  const serviceCities = ["chandigarh", "panchkula", "rajpura", "ambala"];
+  // Service area cities (properly capitalized for display)
+  const serviceCities = ["Chandigarh", "Panchkula", "Rajpura", "Ambala"];
   
   // Get user's location on component mount
   useEffect(() => {
     getGeolocation();
+  }, []);
+
+  // Click outside handler for location dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (locationRef.current && !locationRef.current.contains(event.target)) {
+        setShowLocationDropdown(false);
+      }
+    };
+    
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
   
   // Function to get user's geolocation and convert to city name
@@ -229,6 +243,13 @@ export default function   BusinessDirectory() {
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
+  };
+
+  // Handle city selection from dropdown
+  const handleCitySelect = (city) => {
+    setLocation(city);
+    setIsInServiceArea(true);
+    setShowLocationDropdown(false);
   };
   
   // Map service titles to keywords that might appear in main categories
@@ -555,7 +576,12 @@ export default function   BusinessDirectory() {
 
         <div className="relative rounded-2xl p-4 sm:p-6 mb-8 mx-2 sm:mx-0">
           <div className="flex flex-col md:flex-row gap-3">
-            <div className={`flex items-center bg-gray-50 border ${!isInServiceArea ? 'border-red-300' : 'border-gray-200'} px-4 py-3 rounded-xl w-full md:w-64 flex-shrink-0 hover:border-amber-300 transition-colors relative`}>
+            <div 
+              ref={locationRef}
+              className={`flex items-center bg-gray-50 border ${
+                !isInServiceArea ? 'border-red-300' : 'border-gray-200'
+              } px-4 py-3 rounded-xl w-full md:w-64 flex-shrink-0 hover:border-amber-300 transition-colors relative`}
+            >
               <button
                 onClick={getGeolocation}
                 className="text-amber-500 mr-2 h-5 w-5 flex-shrink-0"
@@ -584,13 +610,45 @@ export default function   BusinessDirectory() {
                   </svg>
                 )}
               </button>
-              <input
-                type="text"
-                className={`bg-transparent outline-none w-full ${!isInServiceArea ? 'text-red-600' : 'text-gray-700'} placeholder-gray-400`}
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Your location"
-              />
+              
+              <div 
+                className="flex items-center cursor-pointer flex-1"
+                onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+              >
+                <input
+                  type="text"
+                  className={`bg-transparent outline-none w-full ${
+                    !isInServiceArea ? 'text-red-600' : 'text-gray-700'
+                  } placeholder-gray-400 cursor-pointer`}
+                  value={location}
+                  placeholder="Select location"
+                  readOnly
+                />
+                <ChevronDown 
+                  size={16} 
+                  className={`ml-1 text-gray-500 transform transition-transform ${
+                    showLocationDropdown ? 'rotate-180' : ''
+                  }`} 
+                />
+              </div>
+              
+              {/* Location dropdown */}
+              {showLocationDropdown && (
+                <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-48 overflow-y-auto">
+                  <div className="py-1">
+                    {serviceCities.map((city) => (
+                      <div
+                        key={city}
+                        className="px-4 py-2 hover:bg-amber-50 cursor-pointer text-gray-700 text-sm"
+                        onClick={() => handleCitySelect(city)}
+                      >
+                        {city}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               {!isInServiceArea && (
                 <div className="absolute -bottom-6 left-0 text-xs text-red-500 font-medium">
                   We're not available in this area yet
@@ -769,40 +827,6 @@ export default function   BusinessDirectory() {
               </div>
             </div>  
           ))}
-
-          {/* <div className="h-60 w-full sm:w-1/6">
-            <div className="bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 rounded-xl h-full overflow-hidden relative transition-all duration-300 hover:shadow-md">
-              <div className="p-5 h-full flex flex-col justify-between">
-                <div>
-                  <p className="text-xs font-medium opacity-80">
-                    Complete Directory
-                  </p>
-                  <h3 className="text-lg font-bold mt-1">All Services</h3>
-                  <p className="text-xs opacity-90 mt-1">
-                    Browse our complete service directory
-                  </p>
-                </div>
-                <button className="flex items-center mt-3 text-xs font-medium text-gray-800 bg-white px-3 py-1.5 rounded-md shadow-sm hover:shadow transition-all hover:scale-[1.02] active:scale-95 w-full sm:w-auto">
-                  View All
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="ml-1 h-3 w-3 text-gray-800"
-                  >
-                    <path d="M5 12h14"></path>
-                    <path d="m12 5 7 7-7 7"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div> */}
         </div>
       </main>
       
