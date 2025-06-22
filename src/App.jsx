@@ -2,7 +2,8 @@ import { Suspense } from 'react'
 import Loader from './Loader/Loader'
 import React from 'react'
 import { RouterProvider } from 'react-router-dom'
-import Router from './Routes/AppLayout'           
+import Router from './Routes/AppLayout'    
+       
 
 export default() => {
     return (
